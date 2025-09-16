@@ -1,6 +1,6 @@
 import type { NameAndUrl } from './shared.types'
 
-export type PokemonEvolutionChainResponse = {
+export interface PokemonEvolutionChainResponseDTO {
 	baby_trigger_item: null
 	chain: Chain
 	id: number

@@ -31,6 +31,18 @@ export function handleApiError(
 			)
 		}
 
+		// Error de petición errónea
+		if (errorMessage.includes('bad request') || errorMessage.includes('400')) {
+			return NextResponse.json(
+				{
+					error: `Bad Request ${resource}`,
+					details: message,
+					...additionalContext,
+				},
+				{ status: 400 },
+			)
+		}
+
 		// Error genérico con la información que tenemos
 		return NextResponse.json(
 			{

@@ -16,6 +16,5 @@ export enum PokemonTypes {
 	Psychic = 'psychic',
 	Rock = 'rock',
 	Steel = 'steel',
-	Unknown = 'unknown',
 	Water = 'water',
 }

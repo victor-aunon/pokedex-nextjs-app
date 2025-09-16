@@ -1,6 +1,6 @@
 import type { PokemonItem } from '@/features/pokemons/domain/entities/pokemon'
 import type { PokemonRepository } from '@/features/pokemons/domain/repositories/pokemon.repository'
-import { pokeapiRepository } from '@/features/pokemons/infrastructure/adapters/pokeapi.adapter'
+import { pokeapiRepository } from '@/features/pokemons/infrastructure/adapters/pokeapi/pokeapi.adapter'
 
 export async function getPokemonChainByNameUseCase(
 	name: string,
@@ -8,7 +8,7 @@ export async function getPokemonChainByNameUseCase(
 	const pokemonRepository: PokemonRepository = pokeapiRepository()
 
 	const pokemonBase = await pokemonRepository.getPokemonByName(name)
-	const pokemonExtraData = await pokemonRepository.getPokemonSpeciesByName(
+	const pokemonExtraData = await pokemonRepository.getPokemonSpecies(
 		pokemonBase.name,
 	)
 	let evolutionChain: string[] = []
@@ -28,7 +28,7 @@ export async function getPokemonChainByNameUseCase(
 			}
 			const evolution = await pokemonRepository.getPokemonByName(pokemonName)
 			const evolutionExtraData =
-				await pokemonRepository.getPokemonSpeciesByName(pokemonName)
+				await pokemonRepository.getPokemonSpecies(pokemonName)
 			pokemons.push({ ...evolution, ...evolutionExtraData })
 		} catch (error) {
 			console.error(`Error fetching evolved pokemon ${pokemonName}: ${error}`)

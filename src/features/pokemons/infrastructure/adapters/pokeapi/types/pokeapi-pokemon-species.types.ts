@@ -1,6 +1,6 @@
 import type { NameAndUrl } from './shared.types'
 
-export type PokemonSpeciesResponse = {
+export interface PokemonSpeciesResponseDTO {
 	evolution_chain: EvolutionChain
 	evolves_from_species: NameAndUrl
 	flavor_text_entries: FlavorTextEntry[]

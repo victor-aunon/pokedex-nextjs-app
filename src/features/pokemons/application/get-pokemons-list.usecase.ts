@@ -1,32 +1,26 @@
 import { env } from '@/env'
-import type { PokemonItem } from '@/features/pokemons/domain/entities/pokemon'
+import type {
+	PokemonBase,
+	PokemonItem,
+} from '@/features/pokemons/domain/entities/pokemon'
 import type { PokemonRepository } from '@/features/pokemons/domain/repositories/pokemon.repository'
-import { pokeapiRepository } from '@/features/pokemons/infrastructure/adapters/pokeapi.adapter'
+import { pokeapiRepository } from '@/features/pokemons/infrastructure/adapters/pokeapi/pokeapi.adapter'
 import type { Pagination } from '@/shared/types/pagination.types'
+import type { GetPokemonListInput } from './get-pokemon-list.input'
 
-export async function getPokemonsListUseCase(): Promise<
-	Pagination<PokemonItem>
-> {
+export async function getPokemonsListUseCase(
+	input: GetPokemonListInput = {},
+): Promise<Pagination<PokemonItem>> {
 	const pokemonRepository: PokemonRepository = pokeapiRepository()
+	const {
+		itemsPerPage = env.DEFAULT_PAGINATION_LIMIT,
+		page,
+		generation,
+		type,
+	} = input
 
-	const pokemonsBaseData = await pokemonRepository.getPokemons(
-		env.DEFAULT_PAGINATION_LIMIT,
-	)
+	if (generation || type)
+		return await pokemonRepository.getFilteredPokemons(type, generation)
 
-	const pokemonsPromises = pokemonsBaseData.results.map(pokemon =>
-		pokemonRepository.getPokemonSpeciesByName(pokemon.name),
-	)
-	const pokemonsData = await Promise.all(pokemonsPromises)
-
-	return {
-		...pokemonsBaseData,
-		results: pokemonsBaseData.results.map((pokemon, index) => ({
-			...pokemon,
-			evolutionChain: pokemonsData[index]?.evolutionChain || null,
-			generation: pokemonsData[index]?.generation || '',
-			description: pokemonsData[index]?.description || '',
-			isLegendary: pokemonsData[index]?.isLegendary || false,
-			isMythical: pokemonsData[index]?.isMythical || false,
-		})),
-	}
+	return await pokemonRepository.getPokemons(itemsPerPage, page)
 }

@@ -1,6 +1,6 @@
 import type { NameAndUrl } from './shared.types'
 
-export type PokemonResponse = {
+export interface PokemonResponseDTO {
 	abilities: Ability[]
 	base_experience: number
 	cries: Cries

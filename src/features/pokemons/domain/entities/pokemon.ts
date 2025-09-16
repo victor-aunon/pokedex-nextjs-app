@@ -6,6 +6,7 @@ export interface PokemonBase {
 	sound: URLString | null
 	heightInCm: number
 	weightInKg: number
+	species: string
 	stats: {
 		hp: number
 		attack: number
@@ -15,6 +16,8 @@ export interface PokemonBase {
 		speed: number
 	}
 }
+
+export type EvolutionChain = string[]
 
 export interface PokemonGenerationDescriptionOddity {
 	evolutionChain: number | null

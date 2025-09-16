@@ -1,6 +1,6 @@
 import type { NameAndUrl } from './shared.types'
 
-export type PokemonsListResponse = {
+export interface PokemonsListResponseDTO {
 	count: number
 	next: URLString | null
 	previous: URLString | null
