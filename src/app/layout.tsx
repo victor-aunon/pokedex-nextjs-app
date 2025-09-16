@@ -1,6 +1,6 @@
 import '@/styles/globals.css'
-
 import type { Metadata } from 'next'
+import { Sansation } from 'next/font/google'
 
 export const metadata: Metadata = {
 	title: 'Create T3 App',
@@ -8,11 +8,19 @@ export const metadata: Metadata = {
 	icons: [{ rel: 'icon', url: '/favicon.ico' }],
 }
 
+const sansation = Sansation({
+	weight: ['300', '400', '700'],
+	style: ['italic', 'normal'],
+	subsets: ['latin-ext'],
+	display: 'swap',
+	variable: '--font-sansation',
+})
+
 export default function RootLayout({
 	children,
 }: Readonly<{ children: React.ReactNode }>) {
 	return (
-		<html lang="en" className="dark">
+		<html lang="en" className={`dark ${sansation.variable}`}>
 			<body>{children}</body>
 		</html>
 	)

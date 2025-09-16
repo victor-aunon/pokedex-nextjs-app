@@ -1,4 +1,3 @@
-@import "./fonts.css";
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "./theme.css";
@@ -39,7 +38,7 @@
 	--sidebar-accent-foreground: oklch(0.3015 0.0572 282.4176);
 	--sidebar-border: oklch(0.9115 0.0216 285.9625);
 	--sidebar-ring: oklch(0.5417 0.179 288.0332);
-	--font-sans: "Sansation", ui-system, sans-serif;
+	--font-sans: var(--font-sansation), ui-system, sans-serif;
 	--font-serif: Georgia, serif;
 	--font-mono: JetBrains Mono, monospace;
 	--radius: 0.5rem;
