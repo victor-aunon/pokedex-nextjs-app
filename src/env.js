@@ -8,7 +8,7 @@ export const env = createEnv({
 	 */
 	server: {
 		NODE_ENV: z.enum(['development', 'test', 'production']),
-		DEFAULT_PAGINATION_LIMIT: z.coerce.number().min(1).max(100).default(30),
+		DEFAULT_PAGINATION_LIMIT: z.coerce.number().min(1).max(3000).default(30),
 	},
 
 	/**
