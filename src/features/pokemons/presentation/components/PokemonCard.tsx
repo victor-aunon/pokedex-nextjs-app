@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import React, { useEffect, useRef, useCallback, useMemo } from 'react'
 import './PokemonCard.css'
 import type { Pokemon } from '@/features/pokemons/domain/entities/pokemon'
@@ -19,7 +20,6 @@ interface PokemonCardProps {
 	generation: Pokemon['generation']
 	types: Pokemon['types']
 	evolutionPlace?: number
-	onContactClick?: () => void
 }
 
 const DEFAULT_BEHIND_GRADIENT =
@@ -69,10 +69,9 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({
 	enableTilt = true,
 	enableMobileTilt = false,
 	mobileTiltSensitivity = 5,
-	onContactClick,
 }) => {
 	const wrapRef = useRef<HTMLDivElement>(null)
-	const cardRef = useRef<HTMLDivElement>(null)
+	const cardRef = useRef<HTMLAnchorElement>(null)
 
 	const animationHandlers = useMemo(() => {
 		if (!enableTilt) return null
@@ -335,17 +334,13 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({
 		[grainUrl, showBehindGradient, behindGradient, innerGradient],
 	)
 
-	const handleContactClick = useCallback(() => {
-		onContactClick?.()
-	}, [onContactClick])
-
 	return (
 		<div
 			ref={wrapRef}
 			className={`pc-card-wrapper ${className}`.trim()}
 			style={cardStyle}
 		>
-			<section ref={cardRef} className="pc-card">
+			<Link ref={cardRef} className="pc-card" href={`/pokemons/${name}`}>
 				<div className="pc-inside">
 					<div className="pokemon-types flex! absolute top-2 right-1/2 translate-x-1/2 gap-1 pt-1">
 						{types.map(type => (
@@ -373,11 +368,9 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({
 						/>
 
 						<div className="pc-user-info">
-							<div className="pc-user-details">
-								<h2 className="text-amber-50 text-heading-md text-shadow-lg text-shadow-secondary italic md:text-2xl lg:text-4xl">
-									<span>{name}</span>
-								</h2>
-							</div>
+							<h2 className="text-amber-50 text-heading-md text-shadow-lg text-shadow-secondary italic md:text-2xl lg:text-4xl">
+								<span>{name.toUpperCase()}</span>
+							</h2>
 						</div>
 					</div>
 
@@ -413,13 +406,13 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({
 							<div className="pokemon-generation flex! items-stretch gap-1 px-2 text-amber-50 text-lg italic">
 								Gen
 								<span className="text-heading-lg text-shadow-lg text-shadow-secondary">
-									{generation}
+									{generation.toUpperCase()}
 								</span>
 							</div>
 						</header>
 					</div>
 				</div>
-			</section>
+			</Link>
 		</div>
 	)
 }

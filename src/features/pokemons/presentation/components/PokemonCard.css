@@ -92,6 +92,7 @@
 			#c137ffff 100%
 		);
 	overflow: hidden;
+	cursor: pointer;
 }
 
 .pc-card:hover,
@@ -235,6 +236,7 @@
 }
 
 .pc-glare {
+	display: block;
 	transform: translate3d(0, 0, 1.1px);
 	overflow: hidden;
 	background-image: radial-gradient(
@@ -302,12 +304,6 @@
 	will-change: transform;
 }
 
-.pc-user-details {
-	display: flex;
-	align-items: center;
-	gap: 12px;
-}
-
 .pc-contact-btn {
 	border: 1px solid rgba(255, 255, 255, 0.1);
 	border-radius: 8px;
@@ -363,39 +359,6 @@
 	filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.5)) brightness(1.15);
 }
 
-.pc-details {
-	width: 100%;
-	position: absolute;
-	display: flex;
-}
-
-.pc-details h3 {
-	font-weight: 600;
-	margin: 0;
-	font-size: min(5svh, 3em);
-	margin: 0;
-	background-image: linear-gradient(to bottom, #fff, #6f6fbe);
-	background-size: 1em 1.5em;
-	-webkit-text-fill-color: transparent;
-	background-clip: text;
-	-webkit-background-clip: text;
-}
-
-.pc-details p {
-	font-weight: 600;
-	position: relative;
-	top: -12px;
-	white-space: nowrap;
-	font-size: 16px;
-	margin: 0 auto;
-	width: min-content;
-	background-image: linear-gradient(to bottom, #fff, #4a4ac0);
-	background-size: 1em 1.5em;
-	-webkit-text-fill-color: transparent;
-	background-clip: text;
-	-webkit-background-clip: text;
-}
-
 @keyframes glow-bg {
 	0% {
 		--bgrotate: 0deg;
@@ -435,22 +398,17 @@
 	pointer-events: auto !important;
 }
 
+/* Enable glare on desktop */
+@media screen and (max-width: 1024px) {
+	.pc-glare {
+		display: none;
+	}
+}
+
 @media (max-width: 768px) {
 	.pc-card {
 		height: 70svh;
 		max-height: 450px;
-	}
-
-	.pc-details {
-		top: 2em;
-	}
-
-	.pc-details h3 {
-		font-size: min(4svh, 2.5em);
-	}
-
-	.pc-details p {
-		font-size: 14px;
 	}
 
 	.pc-user-info {
@@ -461,22 +419,6 @@
 		right: 10px;
 	}
 
-	.pc-user-details {
-		gap: 10px;
-	}
-
-	.pc-handle {
-		font-size: 13px;
-	}
-
-	.pc-status {
-		font-size: 10px;
-	}
-
-	.pc-contact-btn {
-		padding: 6px 12px;
-		font-size: 11px;
-	}
 	.icon {
 		width: 20px;
 		height: 20px;
@@ -489,43 +431,12 @@
 		max-height: 380px;
 	}
 
-	.pc-details {
-		top: 1.5em;
-	}
-
-	.pc-details h3 {
-		font-size: min(3.5svh, 2em);
-	}
-
-	.pc-details p {
-		font-size: 12px;
-		top: -8px;
-	}
-
 	.pc-user-info {
 		width: calc(100% - 10px);
 		border-radius: 25px;
 		bottom: 10px;
 		left: 5px;
 		right: 5px;
-	}
-
-	.pc-user-details {
-		gap: 8px;
-	}
-
-	.pc-handle {
-		font-size: 12px;
-	}
-
-	.pc-status {
-		font-size: 9px;
-	}
-
-	.pc-contact-btn {
-		padding: 5px 10px;
-		font-size: 10px;
-		border-radius: 50px;
 	}
 
 	.icon {
@@ -538,28 +449,6 @@
 	.pc-card {
 		height: 55svh;
 		max-height: 320px;
-	}
-
-	.pc-details h3 {
-		font-size: min(3svh, 1.5em);
-	}
-
-	.pc-details p {
-		font-size: 11px;
-	}
-
-	.pc-user-details {
-		gap: 6px;
-	}
-
-	.pc-handle {
-		font-size: 11px;
-	}
-
-	.pc-contact-btn {
-		padding: 4px 8px;
-		font-size: 9px;
-		border-radius: 50px;
 	}
 
 	.icon {
