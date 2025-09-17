@@ -1,9 +1,11 @@
-import React, { useEffect, useRef, useCallback, useMemo } from 'react'
-import './ProfileCard.css'
+'use client'
 
-interface ProfileCardProps {
+import React, { useEffect, useRef, useCallback, useMemo } from 'react'
+import './PokemonCard.css'
+import type { Pokemon } from '@/features/pokemons/domain/entities/pokemon'
+
+interface PokemonCardProps {
 	avatarUrl: string
-	iconUrl?: string
 	grainUrl?: string
 	behindGradient?: string
 	innerGradient?: string
@@ -12,13 +14,11 @@ interface ProfileCardProps {
 	enableTilt?: boolean
 	enableMobileTilt?: boolean
 	mobileTiltSensitivity?: number
-	miniAvatarUrl?: string
-	name?: string
-	title?: string
-	handle?: string
-	status?: string
-	contactText?: string
-	showUserInfo?: boolean
+	name: Pokemon['name']
+	id: Pokemon['id']
+	generation: Pokemon['generation']
+	types: Pokemon['types']
+	evolutionPlace?: number
 	onContactClick?: () => void
 }
 
@@ -54,24 +54,21 @@ const adjust = (
 const easeInOutCubic = (x: number): number =>
 	x < 0.5 ? 4 * x * x * x : 1 - (-2 * x + 2) ** 3 / 2
 
-const ProfileCardComponent: React.FC<ProfileCardProps> = ({
+const PokemonCardComponent: React.FC<PokemonCardProps> = ({
 	avatarUrl = '<Placeholder for avatar URL>',
-	iconUrl = '<Placeholder for icon URL>',
 	grainUrl = '<Placeholder for grain URL>',
 	behindGradient,
 	innerGradient,
+	name,
+	id,
+	generation,
+	types,
+	evolutionPlace,
 	showBehindGradient = true,
 	className = '',
 	enableTilt = true,
 	enableMobileTilt = false,
 	mobileTiltSensitivity = 5,
-	miniAvatarUrl,
-	name = 'Javi A. Torres',
-	title = 'Software Engineer',
-	handle = 'javicodes',
-	status = 'Online',
-	contactText = 'Contact',
-	showUserInfo = true,
 	onContactClick,
 }) => {
 	const wrapRef = useRef<HTMLDivElement>(null)
@@ -284,6 +281,30 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
 			wrap,
 		)
 
+		// Resize pokemon number based on id amount
+		const pokemonNumberElement: HTMLElement | null = card.querySelector(
+			'.pokemon-number-value',
+		)
+		if (pokemonNumberElement && id.toString().length > 2) {
+			pokemonNumberElement.style.transform = `scale(${0.8})`
+			pokemonNumberElement.style.marginLeft = '-5px'
+		}
+		if (pokemonNumberElement && id.toString().length > 3) {
+			console.log(pokemonNumberElement)
+			pokemonNumberElement.style.transform = `scale(${0.6})`
+			pokemonNumberElement.style.marginLeft = '-10px'
+		}
+
+		// Animate pokemon name if does not fit in the container
+		const nameContainer: HTMLElement | null =
+			card.querySelector('.pc-user-info')
+		if (nameContainer) {
+			const nameElement: HTMLElement | null =
+				nameContainer?.querySelector('span')
+			if (nameElement && nameElement.scrollWidth > nameContainer.clientWidth)
+				nameElement.classList.add('animated')
+		}
+
 		return () => {
 			card.removeEventListener('pointerenter', pointerEnterHandler)
 			card.removeEventListener('pointermove', pointerMoveHandler)
@@ -305,14 +326,13 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
 	const cardStyle = useMemo(
 		() =>
 			({
-				'--icon': iconUrl ? `url(${iconUrl})` : 'none',
 				'--grain': grainUrl ? `url(${grainUrl})` : 'none',
 				'--behind-gradient': showBehindGradient
 					? (behindGradient ?? DEFAULT_BEHIND_GRADIENT)
 					: 'none',
 				'--inner-gradient': innerGradient ?? DEFAULT_INNER_GRADIENT,
 			}) as React.CSSProperties,
-		[iconUrl, grainUrl, showBehindGradient, behindGradient, innerGradient],
+		[grainUrl, showBehindGradient, behindGradient, innerGradient],
 	)
 
 	const handleContactClick = useCallback(() => {
@@ -327,6 +347,17 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
 		>
 			<section ref={cardRef} className="pc-card">
 				<div className="pc-inside">
+					<div className="pokemon-types flex! absolute top-2 right-1/2 translate-x-1/2 gap-1 pt-1">
+						{types.map(type => (
+							<div
+								className={`icon ${type}`}
+								key={`pokemon-${id}-${type}`}
+								title={type}
+							>
+								<img src={`img/types/${type}.svg`} alt={type} />
+							</div>
+						))}
+					</div>
 					<div className="pc-shine" />
 					<div className="pc-glare" />
 					<div className="pc-content pc-avatar-content">
@@ -340,42 +371,52 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
 								target.style.display = 'none'
 							}}
 						/>
-						{showUserInfo && (
-							<div className="pc-user-info">
-								<div className="pc-user-details">
-									<div className="pc-mini-avatar">
-										<img
-											src={miniAvatarUrl || avatarUrl}
-											alt={`${name || 'User'} mini avatar`}
-											loading="lazy"
-											onError={e => {
-												const target = e.target as HTMLImageElement
-												target.style.opacity = '0.5'
-												target.src = avatarUrl
-											}}
-										/>
-									</div>
-									<div className="pc-user-text">
-										<div className="pc-handle">@{handle}</div>
-										<div className="pc-status">{status}</div>
-									</div>
-								</div>
-								<button
-									className="pc-contact-btn"
-									onClick={handleContactClick}
-									style={{ pointerEvents: 'auto' }}
-									type="button"
-									aria-label={`Contact ${name || 'user'}`}
-								>
-									{contactText}
-								</button>
+
+						<div className="pc-user-info">
+							<div className="pc-user-details">
+								<h2 className="text-amber-50 text-heading-md text-shadow-lg text-shadow-secondary italic md:text-2xl lg:text-4xl">
+									<span>{name}</span>
+								</h2>
 							</div>
-						)}
-					</div>
-					<div className="pc-content">
-						<div className="pc-details">
-							<h2 className="text-white italic">{name}</h2>
 						</div>
+					</div>
+
+					<div className="pc-content">
+						<header className="flex! h-fit w-full items-start justify-between">
+							<div className="pokemon-id-section flex! flex-col items-center gap-1">
+								<div className="pokemon-number flex! aspect-square h-16 w-16 items-center justify-center overflow-hidden rounded-[50%]! bg-amber-50 p-3 font-bold text-border italic outline-4 outline-border">
+									<span className="text-sm">#</span>
+									<span className="pokemon-number-value">{id}</span>
+								</div>
+
+								{/* Evolution indicator */}
+								{evolutionPlace && evolutionPlace > 0 && (
+									<div
+										className="evolution-indicator flex! mt-2 flex-col items-center gap-0"
+										title={`Evolution level ${evolutionPlace}`}
+									>
+										{Array.from({ length: evolutionPlace }, (_, index) => (
+											<div
+												key={`pokemon-${id}-evolution-${evolutionPlace}-arrow-${
+													index + 1
+												}`}
+												className={
+													'evolution-arrow pointer-events-auto mt-[-4px] h-0 w-0 border-accent border-r-8 border-r-transparent border-b-14 border-b-foreground border-l-8 border-l-transparent shadow-secondary shadow-xl lg:border-r-14 lg:border-b-20 lg:border-l-14'
+												}
+											/>
+										))}
+										<p className="text-amber-50 text-body-md italic">{`Evo. ${evolutionPlace}`}</p>
+									</div>
+								)}
+							</div>
+
+							<div className="pokemon-generation flex! items-stretch gap-1 px-2 text-amber-50 text-lg italic">
+								Gen
+								<span className="text-heading-lg text-shadow-lg text-shadow-secondary">
+									{generation}
+								</span>
+							</div>
+						</header>
 					</div>
 				</div>
 			</section>
@@ -383,6 +424,6 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
 	)
 }
 
-const ProfileCard = React.memo(ProfileCardComponent)
+const PokemonCard = React.memo(PokemonCardComponent)
 
-export default ProfileCard
+export default PokemonCard

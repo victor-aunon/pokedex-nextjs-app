@@ -1,5 +1,5 @@
 import { getPokemonsListUseCase } from '@/features/pokemons/application/get-pokemons-list.usecase'
-import { PokemonTypes } from '@/features/pokemons/domain/enums/types.enum'
+import { PokemonCard } from '@/features/pokemons/presentation/components'
 import { CardGrid } from '@/shared/components/CardGrid'
 import { Button } from '@/shared/components/ui/button'
 import Link from 'next/link'
@@ -8,10 +8,24 @@ import { use } from 'react'
 export default function HomePage() {
 	// const pokemons = await getPokemonsListUseCase({ type: PokemonTypes.Fairy })
 	// console.log(pokemons)
-	const pokemons = use(getPokemonsListUseCase({ itemsPerPage: 20 }))
+	const pokemons = use(getPokemonsListUseCase({ itemsPerPage: 10 }))
 
 	return (
-		<CardGrid pokemons={pokemons.results} />
+		<CardGrid>
+			{pokemons.results.map(pokemon => (
+				<PokemonCard
+					key={pokemon.id}
+					id={pokemon.id}
+					types={pokemon.types}
+					generation={pokemon.generation.toUpperCase()}
+					avatarUrl={pokemon.image || ''}
+					enableTilt={true}
+					name={pokemon.name.toUpperCase()}
+					grainUrl="https://reactbits.dev/assets/grain.webp"
+					showBehindGradient={false}
+				/>
+			))}
+		</CardGrid>
 		// <main className=" flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-display text-white">
 		//   <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
 		//     <h2 className="text-white tracking-tight">

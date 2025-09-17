@@ -11,8 +11,7 @@ export const metadata: Metadata = {
 const sansation = Sansation({
 	weight: ['300', '400', '700'],
 	style: ['italic', 'normal'],
-	subsets: ['latin-ext'],
-	display: 'swap',
+	subsets: ['latin'],
 	variable: '--font-sansation',
 })
 
