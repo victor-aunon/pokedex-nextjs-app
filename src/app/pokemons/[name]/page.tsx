@@ -4,7 +4,7 @@ import { PokemonPageView } from './PokemonPageView'
 import { notFound } from 'next/navigation'
 
 interface PageProps {
-	params: { name: string }
+	params: Promise<{ name: string }>
 }
 
 export default async function PokemonPage({ params }: PageProps) {
