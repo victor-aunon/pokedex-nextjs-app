@@ -1,8 +1,6 @@
 import { getPokemonsListUseCase } from '@/features/pokemons/application/get-pokemons-list.usecase'
 import { PokemonCard } from '@/features/pokemons/presentation/components'
-import { CardGrid } from '@/shared/components/CardGrid'
-import { Button } from '@/shared/components/ui/button'
-import Link from 'next/link'
+import { CardGrid } from '@/shared/components/ui/atoms/CardGrid'
 import { use } from 'react'
 
 export default function HomePage() {
@@ -23,6 +21,7 @@ export default function HomePage() {
 					name={pokemon.name}
 					grainUrl="https://reactbits.dev/assets/grain.webp"
 					showBehindGradient={false}
+					className="scale-70 w-xl:scale-100 lg:scale-75"
 				/>
 			))}
 		</CardGrid>
