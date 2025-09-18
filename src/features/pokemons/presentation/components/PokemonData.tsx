@@ -16,7 +16,7 @@ export default function PokemonData({
 	species,
 }: PokemonDataProps) {
 	return (
-		<section className="grid grid-cols-2 gap-4">
+		<section className="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-4 md:grid-cols-[repeat(auto-fit,minmax(320px,1fr))] lg:grid-cols-[repeat(auto-fit,minmax(220px,1fr))]">
 			<Card>
 				<Card.Title icon={Ruler}>Height</Card.Title>
 				<Card.TextContent className="text-center">{height} cm</Card.TextContent>

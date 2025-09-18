@@ -41,7 +41,7 @@ export default function PokemonEvolutionChain({
 							</span>
 
 							<span className="z-10 text-muted-foreground text-sm italic">
-								#{pokemon.id.toString().padStart(3, '0')}
+								#{pokemon.id.toString()}
 							</span>
 							{/* Cursor icon */}
 							{pokemon.name.toLowerCase() ===
@@ -53,7 +53,7 @@ export default function PokemonEvolutionChain({
 						</Link>
 
 						{index < pokemonChain.length - 1 && (
-							<div className="mx-2 text-2xl text-gray-400 dark:text-gray-600">
+							<div className="mx-2 hidden text-heading-lg text-muted-foreground/40 sm:block">
 								→
 							</div>
 						)}

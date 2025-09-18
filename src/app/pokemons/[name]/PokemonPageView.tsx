@@ -1,6 +1,7 @@
 import type { PokemonItem } from '@/features/pokemons/domain/entities/pokemon'
 import {
 	PokemonEvolutionChain,
+	PokemonSoundPlayer,
 	PokemonTypeBadge,
 } from '@/features/pokemons/presentation/components'
 import {
@@ -57,8 +58,15 @@ export function PokemonPageView({
 						{/* Número del Pokémon */}
 						<div className="flex items-center gap-4">
 							<p className="text-heading-lg text-muted-foreground italic">
-								#{currentPokemon.id.toString().padStart(3, '0')}
+								#{currentPokemon.id.toString()}
 							</p>
+
+							{/* Botón de sonido */}
+							<PokemonSoundPlayer
+								sound={currentPokemon.sound}
+								pokemonName={currentPokemon.name}
+							/>
+
 							{/* Badges especiales */}
 							<div className="flex gap-2">
 								{currentPokemon.isLegendary && (
@@ -78,10 +86,10 @@ export function PokemonPageView({
 					</div>
 
 					{/* Columna derecha: Información */}
-					<div className="space-y-6">
+					<section className="space-y-6">
 						{/* Nombre y tipos */}
-						<div>
-							<h1 className="mb-4 text-foreground text-heading-xl capitalize ">
+						<div className="flex flex-wrap items-center gap-4">
+							<h1 className=" flex-1 text-foreground text-heading-xl capitalize">
 								{currentPokemon.name}
 							</h1>
 
@@ -111,7 +119,7 @@ export function PokemonPageView({
 								</p>
 							</Card>
 						)}
-					</div>
+					</section>
 				</div>
 
 				{/* Estadísticas */}
