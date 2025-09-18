@@ -60,12 +60,12 @@
 }
 
 .pc-card {
-	height: 80svh;
+	height: 520px;
 	outline: 10px solid var(--color-primary);
 	background-color: var(--color-primary);
 	max-height: 540px;
 	display: grid;
-	aspect-ratio: 0.718;
+	aspect-ratio: 0.728;
 	border-radius: var(--card-radius);
 	position: relative;
 	background-blend-mode: color-dodge, normal, normal, normal;
@@ -406,11 +406,6 @@
 }
 
 @media (max-width: 768px) {
-	.pc-card {
-		height: 70svh;
-		max-height: 450px;
-	}
-
 	.pc-user-info {
 		width: calc(100% - 20px);
 		border-radius: 20px;
@@ -420,17 +415,12 @@
 	}
 
 	.icon {
-		width: 20px;
-		height: 20px;
+		width: 40px;
+		height: 40px;
 	}
 }
 
 @media (max-width: 480px) {
-	.pc-card {
-		height: 60svh;
-		max-height: 380px;
-	}
-
 	.pc-user-info {
 		width: calc(100% - 10px);
 		border-radius: 25px;
@@ -440,20 +430,15 @@
 	}
 
 	.icon {
-		width: 25px;
-		height: 25px;
+		width: 35px;
+		height: 35px;
 	}
 }
 
 @media (max-width: 320px) {
-	.pc-card {
-		height: 55svh;
-		max-height: 320px;
-	}
-
 	.icon {
-		width: 20px;
-		height: 20px;
+		width: 30px;
+		height: 30px;
 	}
 }
 
