@@ -8,6 +8,10 @@ export async function getPokemonChainByNameUseCase(
 	const pokemonRepository: PokemonRepository = pokeapiRepository()
 
 	const pokemonBase = await pokemonRepository.getPokemonByName(name)
+	if (!pokemonBase) {
+		throw new Error(`Pokemon with name ${name} not found`)
+	}
+
 	const pokemonExtraData = await pokemonRepository.getPokemonSpecies(
 		pokemonBase.name,
 	)
