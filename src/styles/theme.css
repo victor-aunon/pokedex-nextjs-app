@@ -33,6 +33,26 @@
 	--color-sidebar-border: var(--sidebar-border);
 	--color-sidebar-ring: var(--sidebar-ring);
 
+	/* Pokemon Type Colors */
+	--color-pokemon-bug: #92bc2c;
+	--color-pokemon-dark: #595761;
+	--color-pokemon-dragon: #0c69c8;
+	--color-pokemon-electric: #f2d94e;
+	--color-pokemon-fire: #fba54c;
+	--color-pokemon-fairy: #ee90e6;
+	--color-pokemon-fighting: #d3425f;
+	--color-pokemon-flying: #a1bbec;
+	--color-pokemon-ghost: #5f6dbc;
+	--color-pokemon-grass: #5fbd58;
+	--color-pokemon-ground: #da7c4d;
+	--color-pokemon-ice: #75d0c1;
+	--color-pokemon-normal: #a0a29f;
+	--color-pokemon-poison: #b763cf;
+	--color-pokemon-psychic: #fa8581;
+	--color-pokemon-rock: #c9bb8a;
+	--color-pokemon-steel: #5695a3;
+	--color-pokemon-water: #539ddf;
+
 	/* Radius */
 	--radius: 0.5rem;
 	--radius-sm: calc(var(--radius) - 4px);

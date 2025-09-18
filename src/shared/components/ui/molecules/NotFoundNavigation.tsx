@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { Button } from '../atoms/button'
+import { Button } from '../atoms/Button'
 
 export function NotFoundNavigation() {
 	return (

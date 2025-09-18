@@ -5,7 +5,7 @@ export default function NotFoundPage() {
 		'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/129.png'
 
 	return (
-		<section className="m-auto flex flex-1 flex-col items-center justify-center px-4">
+		<section className="m-auto mt-12 flex flex-1 flex-col items-center justify-center px-4">
 			<div className="mx-auto max-w-md space-y-8 text-center">
 				{/* Magikarp Image */}
 				<div className="relative">

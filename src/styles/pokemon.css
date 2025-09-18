@@ -1,0 +1,134 @@
+/* Pokemon types icons */
+.icon {
+	border-radius: 100%;
+	height: 45px;
+	width: 45px;
+	margin: auto;
+	transition: 200ms all;
+}
+
+.icon:hover {
+	transform: scale(1.1);
+}
+
+.icon img {
+	height: 60%;
+	width: 60%;
+	margin: 20%;
+	pointer-events: auto !important;
+}
+
+.remove-shadow {
+	box-shadow: none !important;
+}
+
+.bug {
+	background: var(--color-pokemon-bug);
+	box-shadow: 0 0 20px var(--color-pokemon-bug);
+}
+
+.dark {
+	background: var(--color-pokemon-dark);
+	box-shadow: 0 0 20px var(--color-pokemon-dark);
+}
+
+.dragon {
+	background: var(--color-pokemon-dragon);
+	box-shadow: 0 0 20px var(--color-pokemon-dragon);
+}
+
+.electric {
+	background: var(--color-pokemon-electric);
+	box-shadow: 0 0 20px var(--color-pokemon-electric);
+}
+
+.fire {
+	background: var(--color-pokemon-fire);
+	box-shadow: 0 0 20px var(--color-pokemon-fire);
+}
+
+.fairy {
+	background: var(--color-pokemon-fairy);
+	box-shadow: 0 0 20px var(--color-pokemon-fairy);
+}
+
+.fighting {
+	background: var(--color-pokemon-fighting);
+	box-shadow: 0 0 20px var(--color-pokemon-fighting);
+}
+
+.flying {
+	background: var(--color-pokemon-flying);
+	box-shadow: 0 0 20px var(--color-pokemon-flying);
+}
+
+.ghost {
+	background: var(--color-pokemon-ghost);
+	box-shadow: 0 0 20px var(--color-pokemon-ghost);
+}
+
+.grass {
+	background: var(--color-pokemon-grass);
+	box-shadow: 0 0 20px var(--color-pokemon-grass);
+}
+
+.ground {
+	background: var(--color-pokemon-ground);
+	box-shadow: 0 0 20px var(--color-pokemon-ground);
+}
+
+.ice {
+	background: var(--color-pokemon-ice);
+	box-shadow: 0 0 20px var(--color-pokemon-ice);
+}
+
+.normal {
+	background: var(--color-pokemon-normal);
+	box-shadow: 0 0 20px var(--color-pokemon-normal);
+}
+
+.poison {
+	background: var(--color-pokemon-poison);
+	box-shadow: 0 0 20px var(--color-pokemon-poison);
+}
+
+.psychic {
+	background: var(--color-pokemon-psychic);
+	box-shadow: 0 0 20px var(--color-pokemon-psychic);
+}
+
+.rock {
+	background: var(--color-pokemon-rock);
+	box-shadow: 0 0 20px var(--color-pokemon-rock);
+}
+
+.steel {
+	background: var(--color-pokemon-steel);
+	box-shadow: 0 0 20px var(--color-pokemon-steel);
+}
+
+.water {
+	background: var(--color-pokemon-water);
+	box-shadow: 0 0 20px var(--color-pokemon-water);
+}
+
+@media (max-width: 768px) {
+	.icon {
+		width: 40px;
+		height: 40px;
+	}
+}
+
+@media (max-width: 480px) {
+	.icon {
+		width: 35px;
+		height: 35px;
+	}
+}
+
+@media (max-width: 320px) {
+	.icon {
+		width: 30px;
+		height: 30px;
+	}
+}
