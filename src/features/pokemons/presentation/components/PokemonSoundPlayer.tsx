@@ -28,6 +28,7 @@ export default function PokemonSoundPlayer({
 		} catch (error) {
 			console.error('Error playing Pokemon sound:', error)
 			setHasError(true)
+			setIsPlaying(false)
 		}
 	}
 
