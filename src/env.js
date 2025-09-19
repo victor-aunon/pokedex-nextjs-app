@@ -9,6 +9,11 @@ export const env = createEnv({
 	server: {
 		NODE_ENV: z.enum(['development', 'test', 'production']),
 		DEFAULT_PAGINATION_LIMIT: z.coerce.number().min(1).max(3000).default(30),
+		AMOUNT_OF_POKEMONS_TO_FETCH_IN_DEV: z.coerce
+			.number()
+			.min(1)
+			.max(3000)
+			.default(60),
 	},
 
 	/**
@@ -27,6 +32,8 @@ export const env = createEnv({
 	runtimeEnv: {
 		NODE_ENV: process.env.NODE_ENV,
 		DEFAULT_PAGINATION_LIMIT: process.env.DEFAULT_PAGINATION_LIMIT,
+		AMOUNT_OF_POKEMONS_TO_FETCH_IN_DEV:
+			process.env.AMOUNT_OF_POKEMONS_TO_FETCH_IN_DEV,
 		// NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
 	},
 	/**
