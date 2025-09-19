@@ -1,6 +1,8 @@
 import type {
 	EvolutionChain,
+	Pokemon,
 	PokemonBase,
+	PokemonItem,
 } from '@/features/pokemons/domain/entities/pokemon'
 import type { PokemonEvolutionChainResponseDTO } from './types/pokeapi-evolution-chain.types.ts'
 import type { PokemonResponseDTO } from './types/pokeapi-pokemon.types.ts'
@@ -40,6 +42,15 @@ export function pokemonResponseToDomain(
 				pokemon.stats.find(stat => stat.stat.name === 'speed')?.base_stat ?? 0,
 		},
 	}
+}
+
+export function setEvolutionsToPokemons(pokemons: PokemonItem[]): Pokemon[] {
+	return pokemons.map(pokemon => ({
+		...pokemon,
+		evolutions: pokemons.filter(
+			p => p.evolutionChain === pokemon.evolutionChain,
+		),
+	}))
 }
 
 export function evolutionChainToDomain(

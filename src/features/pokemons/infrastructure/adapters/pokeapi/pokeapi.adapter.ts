@@ -1,4 +1,5 @@
 import type {
+	Pokemon,
 	PokemonBase,
 	PokemonGenerationDescriptionOddity,
 	PokemonItem,
@@ -11,6 +12,7 @@ import type { Pagination } from '@/shared/types/pagination.types'
 import {
 	evolutionChainToDomain,
 	pokemonResponseToDomain,
+	setEvolutionsToPokemons,
 } from './pokeapi.mapper'
 import type { PokemonEvolutionChainResponseDTO } from './types/pokeapi-evolution-chain.types'
 import type { PokemonSpeciesResponseDTO } from './types/pokeapi-pokemon-species.types'
@@ -23,7 +25,7 @@ export function pokeapiRepository(): PokemonRepository {
 	async function getPokemons(
 		itemsPerPage: number,
 		page = 1,
-	): Promise<Pagination<PokemonItem>> {
+	): Promise<Pagination<Pokemon>> {
 		let listData: PokemonsListResponseDTO
 		const baseResponse = {
 			results: [],
@@ -61,14 +63,18 @@ export function pokeapiRepository(): PokemonRepository {
 			)
 			const pokemonsSpecies = await Promise.all(pokemonsSpeciesPromises)
 
-			const pokemons: PokemonItem[] = pokemonsBase.map((pokemon, index) => ({
-				...pokemon,
-				evolutionChain: pokemonsSpecies[index]?.evolutionChain || null,
-				generation: pokemonsSpecies[index]?.generation || '',
-				description: pokemonsSpecies[index]?.description || '',
-				isLegendary: pokemonsSpecies[index]?.isLegendary || false,
-				isMythical: pokemonsSpecies[index]?.isMythical || false,
-			}))
+			const pokemonsItem: PokemonItem[] = pokemonsBase.map(
+				(pokemon, index) => ({
+					...pokemon,
+					evolutionChain: pokemonsSpecies[index]?.evolutionChain || null,
+					generation: pokemonsSpecies[index]?.generation || '',
+					description: pokemonsSpecies[index]?.description || '',
+					isLegendary: pokemonsSpecies[index]?.isLegendary || false,
+					isMythical: pokemonsSpecies[index]?.isMythical || false,
+				}),
+			)
+
+			const pokemons: Pokemon[] = setEvolutionsToPokemons(pokemonsItem)
 
 			const currentPage = Math.floor(offset / itemsPerPage) + 1
 			const totalPages = Math.ceil(listAllData.results.length / itemsPerPage)
@@ -84,11 +90,11 @@ export function pokeapiRepository(): PokemonRepository {
 		}
 	}
 
-	async function getFilteredPokemons(
+	async function getAllFilteredPokemons(
 		type?: PokemonTypes,
 		generation?: PokemonGenerations,
 		itemsPerPage = 1500,
-	): Promise<Pagination<PokemonItem>> {
+	): Promise<Pagination<Pokemon>> {
 		let listData: PokemonsListResponseDTO
 		const baseResponse = {
 			results: [],
@@ -107,7 +113,7 @@ export function pokeapiRepository(): PokemonRepository {
 			return baseResponse
 		}
 
-		let pokemons: PokemonItem[] = []
+		let pokemons: Pokemon[] = []
 		const pokemonsBaseChunks = chunk(listData.results, 100)
 
 		// Divide the fetching in chunks, since there are so many requests
@@ -121,7 +127,6 @@ export function pokeapiRepository(): PokemonRepository {
 				const pokemonsBaseAll = await Promise.all(pokemonsBasePromises)
 				pokemonsBase = pokemonsBaseAll.filter(pokemonBase => {
 					if (type) return pokemonBase.types?.includes(type)
-
 					return true
 				})
 			} catch (error) {
@@ -136,7 +141,7 @@ export function pokeapiRepository(): PokemonRepository {
 
 				const pokemonsSpecies = await Promise.all(pokemonsSpeciesPromises)
 
-				pokemons = [
+				pokemons = setEvolutionsToPokemons([
 					...pokemons,
 					...pokemonsBase
 						.map((pokemonBase, index) => ({
@@ -152,7 +157,7 @@ export function pokeapiRepository(): PokemonRepository {
 								return pokemon.generation === generation.split('-')[1]
 							return true
 						}),
-				]
+				])
 			} catch (error) {
 				console.error(`Error fetching pokemons species: ${error}`)
 			}
@@ -257,7 +262,7 @@ export function pokeapiRepository(): PokemonRepository {
 
 	return {
 		getPokemons,
-		getFilteredPokemons,
+		getAllFilteredPokemons,
 		getPokemonByName,
 		getPokemonEvolutionChain,
 		getPokemonSpecies,
