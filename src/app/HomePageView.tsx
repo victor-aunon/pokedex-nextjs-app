@@ -11,24 +11,21 @@ import {
 import { usePagination } from '@/features/pokemons/presentation/hooks/usePagination'
 import { CardGrid } from '@/shared/components/ui/atoms/CardGrid'
 import { UIPagination } from '@/shared/components/ui/molecules/Pagination'
+import { useSearchParams } from 'next/navigation'
 
 interface HomePageViewProps {
 	pokemons: Pokemon[]
 	itemsPerPage: number
-	page: number
-	query: string
-	type: PokemonTypes
-	generation: PokemonGenerations
 }
 
-export function HomePageView({
-	pokemons,
-	page,
-	query,
-	type,
-	generation,
-	itemsPerPage,
-}: HomePageViewProps) {
+export function HomePageView({ pokemons, itemsPerPage }: HomePageViewProps) {
+	const searchParams = useSearchParams()
+	const page = Number(searchParams.get('page') || '1') || 1
+	const query = searchParams.get('query') || ''
+	const type = (searchParams.get('type') as PokemonTypes) || ''
+	const generation =
+		(searchParams.get('generation') as PokemonGenerations) || ''
+
 	const {
 		queryState,
 		filtersState,
