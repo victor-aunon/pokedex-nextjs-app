@@ -7,7 +7,6 @@ export const metadata: Metadata = {
 	title: 'Pokédex - Explora el Mundo Pokémon',
 	description:
 		'Descubre todos los Pokémon con nuestra Pokédex interactiva. Explora especies, tipos, generaciones y más información detallada.',
-	icons: [{ rel: 'icon', url: '/favicon.ico' }],
 }
 
 const sansation = Sansation({

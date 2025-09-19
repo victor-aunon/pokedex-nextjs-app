@@ -2,6 +2,10 @@
 
 Una aplicación moderna de Pokédex construida con **Next.js 15**, **TypeScript**, **Tailwind CSS** y **Arquitectura Hexagonal**. Esta aplicación permite explorar, buscar y filtrar Pokémon de todas las generaciones con una interfaz intuitiva y responsive.
 
+## 🕹️ Live demo
+
+Puedes probar la aplicación desplegada en Vercel en la dirección: https://pokedex-nextjs-app-kappa.vercel.app
+
 ## ✨ Características
 
 - 🔍 **Búsqueda inteligente** por nombre de Pokémon
