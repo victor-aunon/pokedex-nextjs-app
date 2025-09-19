@@ -14,9 +14,9 @@ export default function PokemonEvolutionChain({
 }: PokemonEvolutionChainProps) {
 	return (
 		<Card>
-			<h2 className="mb-6 font-bold text-2xl text-gray-900 dark:text-white">
+			<h3 className="mb-6 text-heading-md text-secondary-foreground">
 				Evolution Chain
-			</h2>
+			</h3>
 
 			<div className="flex flex-wrap items-center justify-center gap-4">
 				{pokemonChain.map((pokemon, index) => (

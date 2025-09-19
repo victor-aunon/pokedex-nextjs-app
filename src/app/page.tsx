@@ -1,5 +1,6 @@
 import { env } from '@/env'
 import { getPokemonsListUseCase } from '@/features/pokemons/application/get-pokemons-list.usecase'
+import { PokemonGenerations } from '@/features/pokemons/domain/enums/generations.enum'
 import { PokemonTypes } from '@/features/pokemons/domain/enums/types.enum'
 import { HomePageView } from './HomePageView'
 
@@ -22,7 +23,7 @@ export default async function HomePage(props: { searchParams: SearchParams }) {
 			page={page ? Number(page) : 1}
 			query={query as string}
 			type={type as PokemonTypes}
-			generation={generation as string}
+			generation={generation as PokemonGenerations}
 			itemsPerPage={env.DEFAULT_PAGINATION_LIMIT}
 		/>
 	)

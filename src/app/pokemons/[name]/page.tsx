@@ -1,4 +1,6 @@
 import { getPokemonChainByNameUseCase } from '@/features/pokemons/application/get-pokemon-chain-by-name.usecase'
+import { Suspense } from 'react'
+import { PokemonPageSkeleton } from './PokemonPageSkeleton'
 import { PokemonPageView } from './PokemonPageView'
 
 import { notFound } from 'next/navigation'
@@ -22,9 +24,11 @@ export default async function PokemonPage({ params }: PageProps) {
 	}
 
 	return (
-		<PokemonPageView
-			currentPokemon={currentPokemon}
-			pokemonChain={pokemonChain}
-		/>
+		<Suspense fallback={<PokemonPageSkeleton />}>
+			<PokemonPageView
+				currentPokemon={currentPokemon}
+				pokemonChain={pokemonChain}
+			/>
+		</Suspense>
 	)
 }
