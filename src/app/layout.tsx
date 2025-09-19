@@ -1,6 +1,5 @@
 import '@/styles/globals.css'
-import { Footer } from '@/shared/components/ui/molecules/Footer'
-import { Header } from '@/shared/components/ui/molecules/Header'
+import { Footer, Header } from '@/shared/components/ui/molecules'
 import type { Metadata } from 'next'
 import { Sansation } from 'next/font/google'
 

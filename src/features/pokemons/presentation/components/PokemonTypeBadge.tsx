@@ -6,7 +6,7 @@ export default function PokemonTypeBadge({ type }: { type: string }) {
 	return (
 		<span
 			key={type}
-			className="j flex items-center rounded-full pr-2 font-bold text-body-md text-white"
+			className="flex items-center rounded-full pr-2 font-bold text-body-md text-white"
 			style={{ backgroundColor: getPokemonTypeColor(type) }}
 		>
 			<div

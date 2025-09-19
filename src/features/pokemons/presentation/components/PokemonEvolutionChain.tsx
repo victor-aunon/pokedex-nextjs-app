@@ -1,5 +1,5 @@
 import type { PokemonItem } from '@/features/pokemons/domain/entities/pokemon'
-import Card from '@/shared/components/ui/molecules/Card'
+import { Card } from '@/shared/components/ui/molecules'
 import { Triangle } from 'lucide-react'
 import Link from 'next/link'
 

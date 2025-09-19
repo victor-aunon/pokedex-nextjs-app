@@ -1,3 +1,4 @@
+import { cn } from '@/shared/lib/utils'
 import type { LucideProps } from 'lucide-react'
 
 const Card = ({
@@ -7,7 +8,7 @@ const Card = ({
 }: React.ComponentPropsWithRef<'section'>) => {
 	return (
 		<section
-			className={`rounded-lg border border-border bg-card p-4 ${className}`}
+			className={cn('rounded-lg border border-border bg-card p-4', className)}
 			{...rest}
 		>
 			{children}
@@ -29,12 +30,18 @@ const CardTitle = ({
 }: CardTitleProps) => {
 	return (
 		<h3
-			className={`mb-2 flex items-center gap-1 text-body-md text-muted-foreground ${className}`}
+			className={cn(
+				'mb-2 flex items-center gap-1 text-body-md text-muted-foreground',
+				className,
+			)}
 			{...rest}
 		>
 			{Icon && (
 				<Icon
-					className={`inline-block h-6 w-6 text-card-foreground ${iconClassName}`}
+					className={cn(
+						'inline-block h-6 w-6 text-card-foreground',
+						iconClassName,
+					)}
 				/>
 			)}
 			{children}
@@ -49,7 +56,7 @@ const CardTextContent = ({
 }: React.ComponentPropsWithRef<'p'>) => {
 	return (
 		<p
-			className={`text-heading-md text-secondary-foreground ${className}`}
+			className={cn('text-heading-md text-secondary-foreground', className)}
 			{...rest}
 		>
 			{children}
@@ -60,4 +67,4 @@ const CardTextContent = ({
 Card.Title = CardTitle
 Card.TextContent = CardTextContent
 
-export default Card
+export { Card }

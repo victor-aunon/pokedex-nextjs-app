@@ -4,6 +4,7 @@ import Link from 'next/link'
 import React, { useEffect, useRef, useCallback, useMemo } from 'react'
 import './PokemonCard.css'
 import type { Pokemon } from '@/features/pokemons/domain/entities/pokemon'
+import { cn } from '@/shared/lib/utils'
 
 interface PokemonCardProps {
 	avatarUrl: string
@@ -289,7 +290,6 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({
 			pokemonNumberElement.style.marginLeft = '-5px'
 		}
 		if (pokemonNumberElement && id.toString().length > 3) {
-			console.log(pokemonNumberElement)
 			pokemonNumberElement.style.transform = `scale(${0.6})`
 			pokemonNumberElement.style.marginLeft = '-10px'
 		}
@@ -337,10 +337,15 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({
 	return (
 		<div
 			ref={wrapRef}
-			className={`pc-card-wrapper ${className}`.trim()}
+			className={cn('pc-card-wrapper', className)}
 			style={cardStyle}
 		>
-			<Link ref={cardRef} className="pc-card" href={`/pokemons/${name}`}>
+			<Link
+				ref={cardRef}
+				className="pc-card"
+				href={`/pokemons/${name}`}
+				prefetch={false}
+			>
 				<div className="pc-inside">
 					<div className="pokemon-types flex! absolute top-2 right-1/2 translate-x-1/2 gap-1 pt-1">
 						{types.map(type => (

@@ -1,4 +1,4 @@
-import { NotFoundNavigation } from '@/shared/components/ui/molecules/NotFoundNavigation'
+import { NotFoundNavigation } from '@/shared/components/ui/molecules'
 
 export default function NotFoundPage() {
 	const magiKarpImageUrl =

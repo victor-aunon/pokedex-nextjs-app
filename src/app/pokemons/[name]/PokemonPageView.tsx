@@ -9,10 +9,9 @@ import {
 	PokemonStats,
 } from '@/features/pokemons/presentation/components'
 import TiltedCard from '@/shared/components/TiltedCard'
-import { Button } from '@/shared/components/ui/atoms/Button'
-import Card from '@/shared/components/ui/molecules/Card'
+import { GoBackButton } from '@/shared/components/ui/atoms/GoBackButton'
+import { Card } from '@/shared/components/ui/molecules'
 import { ArrowLeft, Sparkle, Zap } from 'lucide-react'
-import Link from 'next/link'
 
 interface PokemonPageViewProps {
 	currentPokemon: PokemonItem
@@ -28,12 +27,10 @@ export function PokemonPageView({
 			<div className="container mx-auto max-w-6xl px-4 py-8">
 				{/* Header con botón de regreso */}
 				<div className="mb-8 flex items-center gap-4">
-					<Link href="/">
-						<Button variant="outline" size="lg" className="w-fit">
-							<ArrowLeft className="h-5 w-5" />
-							Go to Pokedex
-						</Button>
-					</Link>
+					<GoBackButton>
+						<ArrowLeft className="h-5 w-5" />
+						Go to Pokedex
+					</GoBackButton>
 				</div>
 
 				{/* Grid principal */}
@@ -45,8 +42,8 @@ export function PokemonPageView({
 								imageSrc={currentPokemon.image || ''}
 								altText={`${currentPokemon.name} artwork`}
 								captionText={currentPokemon.name}
-								containerHeight="400px"
-								containerWidth="400px"
+								containerHeight="380px"
+								containerWidth="380px"
 								imageHeight="350px"
 								imageWidth="350px"
 								scaleOnHover={1.05}
@@ -55,18 +52,16 @@ export function PokemonPageView({
 							/>
 						</div>
 
-						{/* Número del Pokémon */}
-						<div className="flex items-center gap-4">
+						<div className="flex flex-wrap items-center gap-4">
+							{/* Número del Pokémon */}
 							<p className="text-heading-lg text-muted-foreground italic">
 								#{currentPokemon.id.toString()}
 							</p>
-
 							{/* Botón de sonido */}
 							<PokemonSoundPlayer
 								sound={currentPokemon.sound}
 								pokemonName={currentPokemon.name}
 							/>
-
 							{/* Badges especiales */}
 							<div className="flex gap-2">
 								{currentPokemon.isLegendary && (
@@ -88,12 +83,12 @@ export function PokemonPageView({
 					{/* Columna derecha: Información */}
 					<section className="space-y-6">
 						{/* Nombre y tipos */}
-						<div className="flex flex-wrap items-center gap-4">
+						<div className="flex flex-wrap items-baseline gap-4">
 							<h1 className=" flex-1 text-foreground text-heading-xl capitalize">
 								{currentPokemon.name}
 							</h1>
 
-							<div className="mb-4 flex flex-wrap gap-2">
+							<div className="flex flex-wrap gap-2">
 								{currentPokemon.types.map(type => (
 									<PokemonTypeBadge key={type} type={type} />
 								))}

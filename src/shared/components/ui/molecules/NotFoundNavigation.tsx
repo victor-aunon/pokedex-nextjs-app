@@ -1,7 +1,6 @@
-'use client'
-
 import Link from 'next/link'
 import { Button } from '../atoms/Button'
+import { GoBackButton } from '../atoms/GoBackButton'
 
 export function NotFoundNavigation() {
 	return (
@@ -11,14 +10,7 @@ export function NotFoundNavigation() {
 					Return to Pokédex
 				</Button>
 			</Link>
-			<Button
-				variant="outline"
-				size="lg"
-				onClick={() => window.history.back()}
-				className="w-fit"
-			>
-				Go Back
-			</Button>
+			<GoBackButton />
 		</div>
 	)
 }

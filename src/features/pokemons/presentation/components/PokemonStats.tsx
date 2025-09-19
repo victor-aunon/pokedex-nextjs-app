@@ -1,5 +1,5 @@
 import type { Pokemon } from '@/features/pokemons/domain/entities/pokemon'
-import Card from '@/shared/components/ui/molecules/Card'
+import { Card } from '@/shared/components/ui/molecules'
 import {
 	Heart,
 	type LucideProps,
