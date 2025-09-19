@@ -5,34 +5,19 @@ export function Footer() {
 	return (
 		<footer className="border-t bg-card">
 			<div className="container mx-auto max-w-screen-2xl px-4 py-8">
-				<div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-4">
+				<div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
 					{/* Información del proyecto */}
 					<div className="space-y-3">
 						<h3 className="text-heading-md">Pokédex</h3>
 						<p className="text-muted-foreground text-sm">
-							Explora el mundo de los Pokémon con nuestra Pokédex interactiva.
-							Descubre especies, tipos y generaciones.
+							Explore the world of Pokémon with our interactive Pokédex.
+							Discover species, types, and generations.
 						</p>
-					</div>
-
-					{/* Enlaces rápidos */}
-					<div className="space-y-3">
-						<h3 className="text-heading-md">Enlaces rápidos</h3>
-						<ul className="space-y-2 text-sm">
-							<li>
-								<Link
-									href="/random"
-									className="text-muted-foreground transition-colors hover:text-foreground"
-								>
-									Pokémon aleatorio
-								</Link>
-							</li>
-						</ul>
 					</div>
 
 					{/* Recursos */}
 					<div className="space-y-3">
-						<h3 className="text-heading-md">Recursos</h3>
+						<h3 className="text-heading-md">Resources</h3>
 						<ul className="space-y-2 text-sm">
 							<li>
 								<Link
@@ -83,7 +68,7 @@ export function Footer() {
 
 					{/* Desarrollador */}
 					<div className="space-y-3">
-						<h3 className="text-heading-md">Desarrollador</h3>
+						<h3 className="text-heading-md">Developer</h3>
 						<ul className="space-y-2 text-sm">
 							<li>
 								<a
@@ -103,16 +88,16 @@ export function Footer() {
 				{/* Línea divisoria */}
 				<div className="mt-8 mb-4 border-t pt-6">
 					<p className="mx-auto flex w-fit items-center gap-1 text-muted-foreground text-sm">
-						Hecho con
-						<Heart className="h-4 w-4 fill-current text-primary" />y Next.js
+						Made with
+						<Heart className="h-4 w-4 fill-current text-primary" /> and Next.js
 					</p>
 				</div>
 
 				{/* Disclaimer */}
 				<p className="mx-auto w-fit w-max-[65ch] text-center text-muted-foreground text-xs">
-					Pokémon y Pokémon character names son marcas registradas de Nintendo.
-					Esta aplicación no está afiliada con Nintendo, Game Freak o The
-					Pokémon Company.
+					Pokémon and Pokémon character names are registered trademarks of
+					Nintendo. This application is not affiliated with Nintendo, Game
+					Freak, or The Pokémon Company.
 				</p>
 			</div>
 		</footer>
