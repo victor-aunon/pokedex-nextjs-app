@@ -119,6 +119,7 @@
 }
 
 .pc-shine {
+	display: block;
 	mask-mode: luminance;
 	mask-repeat: repeat;
 	mask-size: 150%;
@@ -236,7 +237,6 @@
 }
 
 .pc-glare {
-	display: block;
 	transform: translate3d(0, 0, 1.1px);
 	overflow: hidden;
 	background-image: radial-gradient(
@@ -379,9 +379,9 @@
 	}
 }
 
-/* Enable glare on desktop */
+/* Enable shine on desktop */
 @media screen and (max-width: 1024px) {
-	.pc-glare {
+	.pc-shine {
 		display: none;
 	}
 }
