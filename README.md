@@ -72,7 +72,7 @@ src/
 │   ├── components/
 │   │   ├── ui/                  # Componentes UI base
 │   │   │   └── atoms/
-│   │   │       └── Skeleton.tsx
+│   │   │       └── Button.tsx
 │   │   ├── CardGrid.tsx
 │   │   └── TiltedCard.tsx
 │   ├── lib/
@@ -93,7 +93,7 @@ src/
 - **Barra de búsqueda** con filtrado en tiempo real
 - **Filtros por tipo** (Fuego, Agua, Planta, etc.)
 - **Filtros por generación** (I, II, III, etc.)
-- **Grid responsive** de tarjetas de Pokémon
+- **Grid responsive** de tarjetas de Pokémon (ciertos efectos visuales están desactivados para móvil)
 - **Paginación** con navegación intuitiva
 
 ### 🔍 Página de Detalle (`/pokemons/[name]`)
@@ -128,7 +128,7 @@ pnpm install
 
 ### 3. Configurar variables de entorno
 
-Crea un archivo `.env.local` en la raíz del proyecto:
+Crea un archivo `.env` en la raíz del proyecto:
 
 ```env
 # Configuración del entorno
