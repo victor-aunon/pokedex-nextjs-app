@@ -29,7 +29,7 @@ export default function PokemonData({
 
 			<Card>
 				<Card.Title icon={CalendarClock}>Generation</Card.Title>
-				<Card.TextContent className="text-center capitalize">
+				<Card.TextContent className="text-center uppercase">
 					{generation}
 				</Card.TextContent>
 			</Card>
