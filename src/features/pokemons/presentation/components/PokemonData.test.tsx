@@ -139,7 +139,7 @@ describe('PokemonData', () => {
 		})
 	})
 
-	it('should apply capitalize class to generation and species', () => {
+	it('should apply capitalize class to species and uppercase class to generation', () => {
 		render(<PokemonData {...mockPokemonDataProps} />)
 
 		const textContents = screen.getAllByTestId('card-content')
@@ -152,7 +152,7 @@ describe('PokemonData', () => {
 			card => card.textContent === 'Seed Pokémon',
 		)
 
-		expect(generationCard).toHaveClass('capitalize')
+		expect(generationCard).toHaveClass('uppercase')
 		expect(speciesCard).toHaveClass('capitalize')
 	})
 })

@@ -74,29 +74,12 @@ export function usePagination({
 
 	const totalPages = Math.ceil(filteredPokemons.length / itemsPerPage)
 
-	// Reset page to 1 when filters change or if current page is out of range
+	// Reset page to 1 when current page is out of range
 	useEffect(() => {
 		if (currentPage > totalPages && totalPages > 0) {
 			setCurrentPage(1)
 		}
 	}, [currentPage, totalPages])
-
-	// Check if filters have changed to reset page
-	useEffect(() => {
-		const hasFiltersChanged =
-			prevFiltersRef.current.type !== filtersState.type ||
-			prevFiltersRef.current.generation !== filtersState.generation
-
-		if (hasFiltersChanged) {
-			setCurrentPage(1)
-			prevFiltersRef.current = filtersState
-		}
-	}, [filtersState])
-
-	// Effect to set page to 1 when query changes
-	useEffect(() => {
-		if (queryState) setCurrentPage(1)
-	}, [queryState])
 
 	function handleQueryChange(newQuery: string) {
 		const currentParams = new URLSearchParams(searchParams.toString())
@@ -105,6 +88,7 @@ export function usePagination({
 		else currentParams.set('query', newQuery)
 
 		currentParams.delete('page') // Reset page when query changes
+		setCurrentPage(1)
 
 		router.push(`?${currentParams.toString()}`)
 		setQueryState(newQuery)
@@ -129,12 +113,19 @@ export function usePagination({
 		else currentParams.set('generation', updatedFilters.generation)
 
 		currentParams.delete('page') // Reset page when filters change
+		setCurrentPage(1)
 
 		router.push(`?${currentParams.toString()}`)
 		setFiltersState(updatedFilters)
 	}
 
 	function handlePageChange(newPage: number) {
+		const currentParams = new URLSearchParams(searchParams.toString())
+
+		if (newPage === 1) currentParams.delete('page')
+		else currentParams.set('page', newPage.toString())
+
+		router.push(`?${currentParams.toString()}`)
 		setCurrentPage(newPage)
 	}
 
