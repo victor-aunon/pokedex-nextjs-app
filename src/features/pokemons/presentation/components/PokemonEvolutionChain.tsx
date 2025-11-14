@@ -6,12 +6,22 @@ import Link from 'next/link'
 interface PokemonEvolutionChainProps {
 	currentPokemonName: PokemonItem['name']
 	pokemonChain: PokemonItem[]
+	fromHomeParams?: string
 }
 
 export default function PokemonEvolutionChain({
 	currentPokemonName,
 	pokemonChain,
+	fromHomeParams,
 }: PokemonEvolutionChainProps) {
+	// Generate href with preserved params
+	const getPokemonUrl = (pokemonName: string) => {
+		const baseUrl = `/pokemons/${pokemonName}`
+		return fromHomeParams
+			? `${baseUrl}?from_home=${encodeURIComponent(fromHomeParams)}`
+			: baseUrl
+	}
+
 	return (
 		<Card>
 			<h3 className="mb-6 text-heading-md text-secondary-foreground">
@@ -22,7 +32,7 @@ export default function PokemonEvolutionChain({
 				{pokemonChain.map((pokemon, index) => (
 					<div key={pokemon.id} className="flex items-center">
 						<Link
-							href={`/pokemons/${pokemon.name}`}
+							href={getPokemonUrl(pokemon.name)}
 							className="group relative flex flex-col items-center rounded-lg p-4 transition-colors "
 						>
 							{/* Inner glow */}

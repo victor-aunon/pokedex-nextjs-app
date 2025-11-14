@@ -16,9 +16,13 @@ import { notFound } from 'next/navigation'
 
 interface PokemonPageViewProps {
 	name: string
+	fromHomeParams?: string
 }
 
-export async function PokemonPageView({ name }: PokemonPageViewProps) {
+export async function PokemonPageView({
+	name,
+	fromHomeParams,
+}: PokemonPageViewProps) {
 	const pokemonChain = await getPokemonChainByNameUseCase(name)
 
 	const currentPokemon =
@@ -28,12 +32,17 @@ export async function PokemonPageView({ name }: PokemonPageViewProps) {
 	if (!currentPokemon) {
 		notFound()
 	}
+
+	const homeUrl = fromHomeParams
+		? `/?${decodeURIComponent(fromHomeParams)}`
+		: '/'
+
 	return (
 		<section className="min-h-screen ">
 			<div className="container mx-auto max-w-6xl px-4 py-8">
 				{/* Header con botón de regreso */}
 				<div className="mb-8 flex items-center gap-4">
-					<GoBackButton>
+					<GoBackButton href={homeUrl}>
 						<ArrowLeft className="h-5 w-5" />
 						Go to Pokedex
 					</GoBackButton>
@@ -131,6 +140,7 @@ export async function PokemonPageView({ name }: PokemonPageViewProps) {
 					<PokemonEvolutionChain
 						currentPokemonName={currentPokemon.name}
 						pokemonChain={pokemonChain}
+						fromHomeParams={fromHomeParams}
 					/>
 				)}
 			</div>

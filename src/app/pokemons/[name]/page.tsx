@@ -5,6 +5,7 @@ import { PokemonPageView } from './PokemonPageView'
 
 interface PageProps {
 	params: Promise<{ name: string }>
+	searchParams: Promise<{ from_home?: string }>
 }
 
 export async function generateMetadata(
@@ -19,12 +20,13 @@ export async function generateMetadata(
 	}
 }
 
-export default async function PokemonPage({ params }: PageProps) {
+export default async function PokemonPage({ params, searchParams }: PageProps) {
 	const { name } = await params
+	const { from_home } = await searchParams
 
 	return (
 		<Suspense fallback={<PokemonPageSkeleton />}>
-			<PokemonPageView name={name} />
+			<PokemonPageView name={name} fromHomeParams={from_home} />
 		</Suspense>
 	)
 }

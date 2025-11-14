@@ -81,6 +81,7 @@ export function HomePageView({ pokemons, itemsPerPage }: HomePageViewProps) {
 								grainUrl="https://reactbits.dev/assets/grain.webp"
 								showBehindGradient={false}
 								className="scale-65 w-xl:scale-100 lg:scale-75"
+								searchParams={searchParams.toString()}
 							/>
 						))}
 					</CardGrid>

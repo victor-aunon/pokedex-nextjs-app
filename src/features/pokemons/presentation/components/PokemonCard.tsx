@@ -21,6 +21,7 @@ interface PokemonCardProps {
 	generation: Pokemon['generation']
 	types: Pokemon['types']
 	evolutionPlace?: number
+	searchParams?: string
 }
 
 const DEFAULT_BEHIND_GRADIENT =
@@ -65,6 +66,7 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({
 	generation,
 	types,
 	evolutionPlace,
+	searchParams,
 	showBehindGradient = true,
 	className = '',
 	enableTilt = true,
@@ -73,6 +75,10 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({
 }) => {
 	const wrapRef = useRef<HTMLDivElement>(null)
 	const cardRef = useRef<HTMLAnchorElement>(null)
+
+	const pokemonUrl = searchParams
+		? `/pokemons/${name}?from_home=${encodeURIComponent(searchParams)}`
+		: `/pokemons/${name}`
 
 	const animationHandlers = useMemo(() => {
 		if (!enableTilt) return null
@@ -343,7 +349,7 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({
 			<Link
 				ref={cardRef}
 				className="pc-card"
-				href={`/pokemons/${name}`}
+				href={pokemonUrl}
 				prefetch={false}
 			>
 				<div className="pc-inside">
