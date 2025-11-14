@@ -4,16 +4,21 @@ import { usePagination } from '@/features/pokemons/presentation/hooks/usePaginat
 import { act, renderHook } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-// Mock Next.js navigation
-const mockPush = vi.fn()
 const mockSearchParams = new URLSearchParams()
 
 vi.mock('next/navigation', () => ({
-	useRouter: () => ({
-		push: mockPush,
-	}),
+	useRouter: () => ({}),
 	useSearchParams: () => mockSearchParams,
 }))
+
+const mockReplaceState = vi.fn()
+
+Object.defineProperty(window, 'history', {
+	value: {
+		replaceState: mockReplaceState,
+	},
+	writable: true,
+})
 
 // Mock Pokemon data
 const mockPokemons: Pokemon[] = [
@@ -70,6 +75,7 @@ const mockPokemons: Pokemon[] = [
 describe('usePagination Hook', () => {
 	beforeEach(() => {
 		vi.clearAllMocks()
+		mockReplaceState.mockClear()
 	})
 
 	it('should initialize with default values', () => {
@@ -90,7 +96,7 @@ describe('usePagination Hook', () => {
 		expect(result.current.filtersState.generation).toBeNull()
 	})
 
-	it('should filter Pokémon by query', () => {
+	it('should filter Pokémon by query', async () => {
 		const { result } = renderHook(() =>
 			usePagination({
 				page: 1,
@@ -107,7 +113,13 @@ describe('usePagination Hook', () => {
 		})
 
 		expect(result.current.queryState).toBe('char')
-		expect(mockPush).toHaveBeenCalledWith('?query=char')
+
+		await vi.waitFor(
+			() => {
+				expect(mockReplaceState).toHaveBeenCalledWith({}, '', '/?query=char')
+			},
+			{ timeout: 500 },
+		)
 	})
 
 	it('should filter Pokémon by type', () => {
@@ -127,7 +139,7 @@ describe('usePagination Hook', () => {
 		})
 
 		expect(result.current.filtersState.type).toBe(PokemonTypes.Fire)
-		expect(mockPush).toHaveBeenCalledWith('?type=fire')
+		expect(mockReplaceState).toHaveBeenCalledWith({}, '', '/?type=fire')
 	})
 
 	it('should reset page when filters change', () => {
@@ -201,7 +213,7 @@ describe('usePagination Hook', () => {
 		expect(result.current.paginatedFilteredPokemons[0]?.name).toBe('bulbasaur')
 	})
 
-	it('should clear query from URL when empty string is provided', () => {
+	it('should clear query from URL when empty string is provided', async () => {
 		const { result } = renderHook(() =>
 			usePagination({
 				page: 1,
@@ -217,7 +229,12 @@ describe('usePagination Hook', () => {
 			result.current.handleQueryChange('')
 		})
 
-		expect(mockPush).toHaveBeenCalledWith('?')
+		await vi.waitFor(
+			() => {
+				expect(mockReplaceState).toHaveBeenCalledWith({}, '', '/?')
+			},
+			{ timeout: 500 },
+		)
 	})
 
 	it('should preserve existing filters when updating one filter', () => {

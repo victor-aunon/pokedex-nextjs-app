@@ -16,3 +16,16 @@ export function chunk<t>(array: t[], chunksize: number): t[][] {
 	}
 	return result
 }
+
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+export function debounce<T extends (...args: any[]) => void>(
+	func: T,
+	delay: number,
+): T {
+	let timeoutId: NodeJS.Timeout
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	return ((...args: any[]) => {
+		clearTimeout(timeoutId)
+		timeoutId = setTimeout(() => func(...args), delay)
+	}) as T
+}

@@ -2,8 +2,9 @@
 
 import type { Pokemon } from '@/features/pokemons/domain/entities/pokemon'
 import { PokemonTypes } from '@/features/pokemons/domain/enums/types.enum'
+import { debounce } from '@/shared/lib/utils'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 interface usePaginationProps {
 	page: number
@@ -34,9 +35,6 @@ export function usePagination({
 		generation: generation || null,
 	})
 	const [currentPage, setCurrentPage] = useState(page || 1)
-
-	// Track previous filter values to detect changes
-	const prevFiltersRef = useRef(filtersState)
 
 	const filteredPokemons = useMemo(() => {
 		let filteredPokemons = items
@@ -74,60 +72,79 @@ export function usePagination({
 
 	const totalPages = Math.ceil(filteredPokemons.length / itemsPerPage)
 
-	// Reset page to 1 when current page is out of range
 	useEffect(() => {
 		if (currentPage > totalPages && totalPages > 0) {
 			setCurrentPage(1)
 		}
 	}, [currentPage, totalPages])
 
-	function handleQueryChange(newQuery: string) {
-		const currentParams = new URLSearchParams(searchParams.toString())
+	const updateUrlWithoutNavigation = useCallback((params: URLSearchParams) => {
+		const url = `${window.location.pathname}?${params.toString()}`
+		window.history.replaceState({ ...window.history.state }, '', url)
+	}, [])
 
-		if (!newQuery) currentParams.delete('query')
-		else currentParams.set('query', newQuery)
+	const debouncedUpdateUrl = useMemo(
+		() =>
+			debounce((params: URLSearchParams) => {
+				updateUrlWithoutNavigation(params)
+			}, 300),
+		[updateUrlWithoutNavigation],
+	)
 
-		currentParams.delete('page') // Reset page when query changes
-		setCurrentPage(1)
+	const handleQueryChange = useCallback(
+		(newQuery: string) => {
+			const currentParams = new URLSearchParams(searchParams.toString())
 
-		router.push(`?${currentParams.toString()}`)
-		setQueryState(newQuery)
-	}
+			if (!newQuery) currentParams.delete('query')
+			else currentParams.set('query', newQuery)
 
-	function handleFiltersChange(
-		newFilters: Partial<{
-			type: usePaginationProps['type'] | null
-			generation: usePaginationProps['generation'] | null
-		}>,
-	) {
-		const currentParams = new URLSearchParams(searchParams.toString())
+			currentParams.delete('page')
+			setCurrentPage(1)
+			setQueryState(newQuery)
 
-		// Update the filters state first to get current values
-		const updatedFilters = { ...filtersState, ...newFilters }
+			debouncedUpdateUrl(currentParams)
+		},
+		[searchParams, debouncedUpdateUrl],
+	)
 
-		// Update URL params based on the complete filter state
-		if (!updatedFilters.type) currentParams.delete('type')
-		else currentParams.set('type', updatedFilters.type)
+	const handleFiltersChange = useCallback(
+		(
+			newFilters: Partial<{
+				type: usePaginationProps['type'] | null
+				generation: usePaginationProps['generation'] | null
+			}>,
+		) => {
+			const currentParams = new URLSearchParams(searchParams.toString())
 
-		if (!updatedFilters.generation) currentParams.delete('generation')
-		else currentParams.set('generation', updatedFilters.generation)
+			const updatedFilters = { ...filtersState, ...newFilters }
 
-		currentParams.delete('page') // Reset page when filters change
-		setCurrentPage(1)
+			if (!updatedFilters.type) currentParams.delete('type')
+			else currentParams.set('type', updatedFilters.type)
 
-		router.push(`?${currentParams.toString()}`)
-		setFiltersState(updatedFilters)
-	}
+			if (!updatedFilters.generation) currentParams.delete('generation')
+			else currentParams.set('generation', updatedFilters.generation)
 
-	function handlePageChange(newPage: number) {
-		const currentParams = new URLSearchParams(searchParams.toString())
+			currentParams.delete('page')
+			setCurrentPage(1)
+			setFiltersState(updatedFilters)
 
-		if (newPage === 1) currentParams.delete('page')
-		else currentParams.set('page', newPage.toString())
+			updateUrlWithoutNavigation(currentParams)
+		},
+		[searchParams, filtersState, updateUrlWithoutNavigation],
+	)
 
-		router.push(`?${currentParams.toString()}`)
-		setCurrentPage(newPage)
-	}
+	const handlePageChange = useCallback(
+		(newPage: number) => {
+			const currentParams = new URLSearchParams(searchParams.toString())
+
+			if (newPage === 1) currentParams.delete('page')
+			else currentParams.set('page', newPage.toString())
+
+			updateUrlWithoutNavigation(currentParams)
+			setCurrentPage(newPage)
+		},
+		[searchParams, updateUrlWithoutNavigation],
+	)
 
 	return {
 		queryState,

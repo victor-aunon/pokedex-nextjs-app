@@ -319,6 +319,7 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({
 			animationHandlers.cancelAnimation()
 		}
 	}, [
+		id,
 		enableTilt,
 		enableMobileTilt,
 		animationHandlers,

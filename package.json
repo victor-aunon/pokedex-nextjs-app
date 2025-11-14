@@ -56,9 +56,7 @@
 		"vitest": "^3.2.4"
 	},
 	"lint-staged": {
-		"*.{js,jsx,ts,tsx,css}": [
-			"biome check --write"
-		]
+		"*.{js,jsx,ts,tsx,css}": ["biome check --write"]
 	},
 	"ct3aMetadata": {
 		"initVersion": "7.39.3"
