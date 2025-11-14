@@ -1,6 +1,4 @@
-import { getPokemonChainByNameUseCase } from '@/features/pokemons/application/get-pokemon-chain-by-name.usecase'
 import type { Metadata, ResolvingMetadata } from 'next'
-import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 import { PokemonPageSkeleton } from './PokemonPageSkeleton'
 import { PokemonPageView } from './PokemonPageView'
@@ -24,23 +22,9 @@ export async function generateMetadata(
 export default async function PokemonPage({ params }: PageProps) {
 	const { name } = await params
 
-	const pokemonChain = await getPokemonChainByNameUseCase(name)
-
-	// El primer Pokémon en la cadena es el que buscamos
-	const currentPokemon =
-		pokemonChain.find(p => p.name.toLowerCase() === name.toLowerCase()) ||
-		pokemonChain[0]
-
-	if (!currentPokemon) {
-		notFound()
-	}
-
 	return (
 		<Suspense fallback={<PokemonPageSkeleton />}>
-			<PokemonPageView
-				currentPokemon={currentPokemon}
-				pokemonChain={pokemonChain}
-			/>
+			<PokemonPageView name={name} />
 		</Suspense>
 	)
 }

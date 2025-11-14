@@ -1,4 +1,4 @@
-import type { PokemonItem } from '@/features/pokemons/domain/entities/pokemon'
+import { getPokemonChainByNameUseCase } from '@/features/pokemons/application/get-pokemon-chain-by-name.usecase'
 import {
 	PokemonEvolutionChain,
 	PokemonSoundPlayer,
@@ -12,16 +12,22 @@ import TiltedCard from '@/shared/components/TiltedCard'
 import { GoBackButton } from '@/shared/components/ui/atoms/GoBackButton'
 import { Card } from '@/shared/components/ui/molecules'
 import { ArrowLeft, Sparkle, Zap } from 'lucide-react'
+import { notFound } from 'next/navigation'
 
 interface PokemonPageViewProps {
-	currentPokemon: PokemonItem
-	pokemonChain: PokemonItem[]
+	name: string
 }
 
-export function PokemonPageView({
-	currentPokemon,
-	pokemonChain,
-}: PokemonPageViewProps) {
+export async function PokemonPageView({ name }: PokemonPageViewProps) {
+	const pokemonChain = await getPokemonChainByNameUseCase(name)
+
+	const currentPokemon =
+		pokemonChain.find(p => p.name.toLowerCase() === name.toLowerCase()) ||
+		pokemonChain[0]
+
+	if (!currentPokemon) {
+		notFound()
+	}
 	return (
 		<section className="min-h-screen ">
 			<div className="container mx-auto max-w-6xl px-4 py-8">
