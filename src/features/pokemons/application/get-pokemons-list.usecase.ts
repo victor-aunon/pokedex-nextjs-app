@@ -9,7 +9,6 @@ export async function getPokemonsListUseCase(
 	input: GetPokemonListInput = {},
 ): Promise<Pagination<Pokemon>> {
 	const pokemonRepository: PokemonRepository = pokeapiRepository()
-	console.log('getPokemonsListUseCase input:', input)
 	const {
 		itemsPerPage = env.DEFAULT_PAGINATION_LIMIT,
 		page,

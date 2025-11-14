@@ -44,6 +44,13 @@ export function HomePageView({ pokemons, itemsPerPage }: HomePageViewProps) {
 		itemsPerPage,
 	})
 
+	const currentStateParams = new URLSearchParams()
+	if (queryState) currentStateParams.set('query', queryState)
+	if (filtersState.type) currentStateParams.set('type', filtersState.type)
+	if (filtersState.generation)
+		currentStateParams.set('generation', filtersState.generation)
+	if (currentPage > 1) currentStateParams.set('page', currentPage.toString())
+
 	return (
 		<>
 			<SearchAndFilterNav
@@ -81,7 +88,7 @@ export function HomePageView({ pokemons, itemsPerPage }: HomePageViewProps) {
 								grainUrl="https://reactbits.dev/assets/grain.webp"
 								showBehindGradient={false}
 								className="scale-65 w-xl:scale-100 lg:scale-75"
-								searchParams={searchParams.toString()}
+								searchParams={currentStateParams.toString()}
 							/>
 						))}
 					</CardGrid>
