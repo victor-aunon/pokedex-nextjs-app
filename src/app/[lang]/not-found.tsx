@@ -1,6 +1,11 @@
-import { NotFoundNavigation } from '@/shared/components/ui/molecules'
+'use client'
 
-export default function NotFoundPage() {
+import { NotFoundNavigation } from '@/shared/components/ui/molecules'
+import { useDictionary } from '@/shared/providers/DictionaryProvider'
+
+export default async function NotFoundPage() {
+	const dict = useDictionary()
+
 	const magiKarpImageUrl =
 		'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/129.png'
 
@@ -12,7 +17,7 @@ export default function NotFoundPage() {
 					<div className="absolute inset-0 animate-pulse rounded-full bg-white/20 blur-3xl" />
 					<img
 						src={magiKarpImageUrl}
-						alt="Magikarp - Page Not Found"
+						alt={`Magikarp - ${dict.notFound.notFound}`}
 						className="relative z-10 mx-auto h-48 w-48 animate-bounce drop-shadow-2xl"
 						style={{ filter: 'drop-shadow(0 25px 50px rgb(0 0 0 / 0.25))' }}
 					/>
@@ -22,16 +27,15 @@ export default function NotFoundPage() {
 				<div className="space-y-4">
 					<h1 className="font-bold text-6xl text-white drop-shadow-lg">404</h1>
 					<h2 className="font-semibold text-2xl text-white/90">
-						Page Not Found
+						{dict.notFound.notFound}
 					</h2>
 					<p className="text-lg text-white/80 leading-relaxed">
-						Oops! It looks like this page has splashed away like Magikarp! The
-						page you're looking for doesn't exist.
+						{dict.notFound.message}
 					</p>
 				</div>
 
 				{/* Action Buttons */}
-				<NotFoundNavigation />
+				<NotFoundNavigation dict={dict.notFound} />
 			</div>
 
 			{/* Floating bubbles animation */}

@@ -10,6 +10,7 @@ import {
 	SelectValue,
 } from '@/shared/components/ui/atoms/Select'
 import { Card } from '@/shared/components/ui/molecules'
+import { useDictionary } from '@/shared/providers/DictionaryProvider'
 import { X } from 'lucide-react'
 
 interface SearchAndFilterNavProps {
@@ -33,11 +34,13 @@ export default function SearchAndFilterNav({
 	handleQueryChange,
 	handleFiltersChange,
 }: SearchAndFilterNavProps) {
+	const dict = useDictionary()
+
 	return (
 		<Card className="mb-8 flex w-full flex-wrap justify-between gap-4">
 			<InputSearch
 				name="search"
-				placeholder="Search Pokémon..."
+				placeholder={dict.search.placeholder}
 				className="text-lg!"
 				onChange={e => handleQueryChange(e.target.value)}
 				value={queryState || ''}
@@ -49,7 +52,7 @@ export default function SearchAndFilterNav({
 					onClick={() => handleFiltersChange({ type: null, generation: null })}
 				>
 					<X className="h-4 w-4" />
-					Clear filters
+					{dict.search.clear}
 				</Button>
 				<Select
 					onValueChange={(value: PokemonTypes) =>
@@ -58,7 +61,7 @@ export default function SearchAndFilterNav({
 					value={filtersState.type || ''}
 				>
 					<SelectTrigger className="min-w-[110px] text-md">
-						<SelectValue placeholder="Select a type" />
+						<SelectValue placeholder={dict.search.selectType} />
 					</SelectTrigger>
 					<SelectContent>
 						{Object.values(PokemonTypes).map(pokemonType => (
@@ -67,7 +70,7 @@ export default function SearchAndFilterNav({
 								value={pokemonType}
 								className="text-md"
 							>
-								<span className="capitalize">{pokemonType}</span>
+								<span>{dict.types[pokemonType]}</span>
 							</SelectItem>
 						))}
 					</SelectContent>
@@ -79,7 +82,7 @@ export default function SearchAndFilterNav({
 					value={filtersState.generation || ''}
 				>
 					<SelectTrigger className="min-w-[152px] text-md">
-						<SelectValue placeholder="Select a generation" />
+						<SelectValue placeholder={dict.search.selectGeneration} />
 					</SelectTrigger>
 					<SelectContent>
 						{Object.values(PokemonGenerations).map(generation => (
@@ -88,7 +91,7 @@ export default function SearchAndFilterNav({
 								value={generation}
 								className="text-md"
 							>
-								<span className="capitalize">{generation.split('-')[0]}</span>
+								<span>{dict.search.generation}</span>
 								<span className="uppercase">{generation.split('-')[1]}</span>
 							</SelectItem>
 						))}

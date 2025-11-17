@@ -1,0 +1,95 @@
+{
+	"meta": {
+		"title": "Pokédex - Explora el Mundo Pokémon",
+		"description": "Descubre todos los Pokémon con nuestra Pokédex interactiva. Explora especies, tipos, generaciones y más información detallada."
+	},
+	"search": {
+		"placeholder": "Busca un Pokémon...",
+		"clear": "Limpiar filtros",
+		"selectGeneration": "Selecciona una generación",
+		"selectType": "Selecciona un tipo",
+		"generation": "Generación"
+	},
+	"types": {
+		"bug": "Bicho",
+		"dark": "Oscuro",
+		"dragon": "Dragón",
+		"electric": "Eléctrico",
+		"fairy": "Hada",
+		"fighting": "Lucha",
+		"fire": "Fuego",
+		"flying": "Volador",
+		"ghost": "Fantasma",
+		"grass": "Hierba",
+		"ground": "Tierra",
+		"ice": "Hielo",
+		"normal": "Normal",
+		"poison": "Veneno",
+		"psychic": "Psíquico",
+		"rock": "Roca",
+		"steel": "Acero",
+		"water": "Agua"
+	},
+	"detail": {
+		"meta": {
+			"title": "Pokédex - {name}",
+			"description": "Detalles de {name}"
+		},
+		"return": "Volver a la Pokédex",
+		"legendary": "Legendario",
+		"mythical": "Singular",
+		"stats": "Características base",
+		"height": "Altura",
+		"weight": "Peso",
+		"generation": "Generación",
+		"species": "Especie",
+		"description": "Descripción",
+		"hp": "Puntos de salud",
+		"attack": "Ataque",
+		"defense": "Defensa",
+		"specialAttack": "Ataque Especial",
+		"specialDefense": "Defensa Especial",
+		"speed": "Velocidad",
+		"chain": "Cadena Evolutiva",
+		"player": {
+			"play": "Reproducir sonido",
+			"playing": "Reproduciendo...",
+			"title": "Reproduce el sonido de {pokemonName}",
+			"aria-label": "Sonido de {pokemonName}",
+			"label": "Sonido del Pokemon",
+			"error": "Error",
+			"notSupported": "Tu navegador no soporta el elemento de audio"
+		}
+	},
+	"pagination": {
+		"label": "Navegación de la paginación",
+		"previous": "Anterior",
+		"next": "Siguiente",
+		"goPrevious": "Ir a la anterior página",
+		"goNext": "Ir a la siguiente página",
+		"morePages": "Más páginas"
+	},
+	"footer": {
+		"description": "Descubre todos los Pokémon con nuestra Pokédex interactiva. Explora especies, tipos, generaciones y más información detallada.",
+		"resources": "Recursos",
+		"developer": "Desarrollador",
+		"madeWith": "Hecho con ",
+		"andNextJS": " y Next.js",
+		"disclaimer": "Pokémon y los nombres de los personajes de Pokémon son marcas registradas de Nintendo. Esta applicación no está afiliada con Nintendo, Game Freak, ni The Pokémon Company"
+	},
+	"notFound": {
+		"notFound": "Página No Encontrada",
+		"message": "¡Vaya! ¡Parece que esta página se ha esfumado como Magikarp! La página que buscas no existe.",
+		"return": "Regresar a la Pokédex",
+		"goBack": "Regresar"
+	},
+
+	"noResults": {
+		"notFound": "No se encontraron Pokémons",
+		"noResultsFor": "No se encontraron resultados para ",
+		"message": "Incluso Magikarp no pudo encontrar un Pokémon con ese nombre. ¡Intenta con otro!",
+		"messageWithFilters": "Parece que no hay Pokémons que coincidan con esos filtros. ¡Intenta ajustarlos!",
+		"clearFilters": "Limpiar filtros",
+		"try": "Prueba buscando por \"Pikachu\" o \"Blastoise\""
+	}
+}

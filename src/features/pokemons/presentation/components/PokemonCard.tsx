@@ -4,7 +4,10 @@ import Link from 'next/link'
 import React, { useEffect, useRef, useCallback, useMemo } from 'react'
 import './PokemonCard.css'
 import type { Pokemon } from '@/features/pokemons/domain/entities/pokemon'
+import type { Locale } from '@/i18n-config'
 import { cn } from '@/shared/lib/utils'
+import { useDictionary } from '@/shared/providers/DictionaryProvider'
+import type { PokemonTypes } from '../../domain/enums/types.enum'
 
 interface PokemonCardProps {
 	avatarUrl: string
@@ -22,6 +25,7 @@ interface PokemonCardProps {
 	types: Pokemon['types']
 	evolutionPlace?: number
 	searchParams?: string
+	lang?: Locale
 }
 
 const DEFAULT_BEHIND_GRADIENT =
@@ -72,13 +76,15 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({
 	enableTilt = true,
 	enableMobileTilt = false,
 	mobileTiltSensitivity = 5,
+	lang = 'en',
 }) => {
+	const dict = useDictionary()
 	const wrapRef = useRef<HTMLDivElement>(null)
 	const cardRef = useRef<HTMLAnchorElement>(null)
 
 	const pokemonUrl = searchParams
-		? `/pokemons/${name}?from_home=${encodeURIComponent(searchParams)}`
-		: `/pokemons/${name}`
+		? `/${lang}/pokemons/${name}?from_home=${encodeURIComponent(searchParams)}`
+		: `/${lang}/pokemons/${name}`
 
 	const animationHandlers = useMemo(() => {
 		if (!enableTilt) return null
@@ -359,9 +365,12 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({
 							<div
 								className={`icon ${type}`}
 								key={`pokemon-${id}-${type}`}
-								title={type}
+								title={dict.types[type as PokemonTypes]}
 							>
-								<img src={`img/types/${type}.svg`} alt={type} />
+								<img
+									src={`img/types/${type}.svg`}
+									alt={dict.types[type as PokemonTypes]}
+								/>
 							</div>
 						))}
 					</div>

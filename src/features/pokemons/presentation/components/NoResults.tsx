@@ -1,13 +1,16 @@
 import { Button } from '@/shared/components/ui/atoms/Button'
+import type { Dictionary } from '@/shared/providers/DictionaryProvider'
 import { Search, X } from 'lucide-react'
 
 interface NoResultsProps {
+	dict: Dictionary['noResults']
 	query?: string
 	hasActiveFilters?: boolean
 	onClearFilters?: () => void
 }
 
 export default function NoResults({
+	dict,
 	query,
 	hasActiveFilters = false,
 	onClearFilters,
@@ -29,20 +32,18 @@ export default function NoResults({
 			{/* Main Message */}
 			<div className="mb-6 max-w-md">
 				<h2 className="mb-4 text-foreground text-heading-lg">
-					No Pokémon Found
+					{dict.notFound}
 				</h2>
 
 				{query && (
 					<p className="mb-2 text-body-md text-muted-foreground">
-						No results found for{' '}
+						{dict.noResultsFor}
 						<span className="font-medium text-foreground">"{query}"</span>
 					</p>
 				)}
 
 				<p className="text-body-md text-muted-foreground">
-					{hasActiveFilters
-						? "Your current filters didn't match any Pokémon. Try adjusting your search criteria."
-						: "Even Magikarp couldn't find what you're looking for! Try a different search term."}
+					{hasActiveFilters ? dict.messageWithFilters : dict.message}
 				</p>
 			</div>
 
@@ -51,15 +52,13 @@ export default function NoResults({
 				{hasActiveFilters && onClearFilters && (
 					<Button variant="default" size="lg" onClick={onClearFilters}>
 						<X className="h-4 w-4" />
-						Clear filters
+						{dict.clearFilters}
 					</Button>
 				)}
 
 				<div className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-card-foreground">
 					<Search className="h-4 w-4 text-muted-foreground" />
-					<span className="text-body-md">
-						Try searching for "Pikachu" or "Blastoise"
-					</span>
+					<span className="text-body-md">{dict.try}</span>
 				</div>
 			</div>
 

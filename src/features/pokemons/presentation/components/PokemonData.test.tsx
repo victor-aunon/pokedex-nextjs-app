@@ -1,4 +1,6 @@
+import en from '@/dictionaries/en.json'
 import PokemonData from '@/features/pokemons/presentation/components/PokemonData'
+import { DictionaryProvider } from '@/shared/providers/DictionaryProvider'
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
@@ -43,11 +45,18 @@ const mockPokemonDataProps = {
 	weight: 6.9,
 	generation: 'generation-i',
 	species: 'Seed Pokémon',
+	dict: en.detail,
+}
+
+const renderWithDictionary = (component: React.ReactElement) => {
+	return render(
+		<DictionaryProvider dictionary={en}>{component}</DictionaryProvider>,
+	)
 }
 
 describe('PokemonData', () => {
 	it('should render all Pokemon data cards', () => {
-		render(<PokemonData {...mockPokemonDataProps} />)
+		renderWithDictionary(<PokemonData {...mockPokemonDataProps} />)
 
 		// Check that all 4 cards are rendered
 		const cards = screen.getAllByTestId('card')
@@ -55,7 +64,7 @@ describe('PokemonData', () => {
 	})
 
 	it('should display height information correctly', () => {
-		render(<PokemonData {...mockPokemonDataProps} />)
+		renderWithDictionary(<PokemonData {...mockPokemonDataProps} />)
 
 		expect(screen.getByText('Height')).toBeInTheDocument()
 		expect(screen.getByText('70 cm')).toBeInTheDocument()
@@ -63,7 +72,7 @@ describe('PokemonData', () => {
 	})
 
 	it('should display weight information correctly', () => {
-		render(<PokemonData {...mockPokemonDataProps} />)
+		renderWithDictionary(<PokemonData {...mockPokemonDataProps} />)
 
 		expect(screen.getByText('Weight')).toBeInTheDocument()
 		expect(screen.getByText('6.9 kg')).toBeInTheDocument()
@@ -71,7 +80,7 @@ describe('PokemonData', () => {
 	})
 
 	it('should display generation information correctly', () => {
-		render(<PokemonData {...mockPokemonDataProps} />)
+		renderWithDictionary(<PokemonData {...mockPokemonDataProps} />)
 
 		expect(screen.getByText('Generation')).toBeInTheDocument()
 		expect(screen.getByText('generation-i')).toBeInTheDocument()
@@ -79,7 +88,7 @@ describe('PokemonData', () => {
 	})
 
 	it('should display species information correctly', () => {
-		render(<PokemonData {...mockPokemonDataProps} />)
+		renderWithDictionary(<PokemonData {...mockPokemonDataProps} />)
 
 		expect(screen.getByText('Species')).toBeInTheDocument()
 		expect(screen.getByText('Seed Pokémon')).toBeInTheDocument()
@@ -92,7 +101,7 @@ describe('PokemonData', () => {
 			weight: 25.5,
 		}
 
-		render(<PokemonData {...decimalWeightProps} />)
+		renderWithDictionary(<PokemonData {...decimalWeightProps} />)
 
 		expect(screen.getByText('25.5 kg')).toBeInTheDocument()
 	})
@@ -103,7 +112,7 @@ describe('PokemonData', () => {
 			height: 1250,
 		}
 
-		render(<PokemonData {...largeHeightProps} />)
+		renderWithDictionary(<PokemonData {...largeHeightProps} />)
 
 		expect(screen.getByText('1250 cm')).toBeInTheDocument()
 	})
@@ -114,7 +123,7 @@ describe('PokemonData', () => {
 			generation: 'generation-iv',
 		}
 
-		render(<PokemonData {...differentGenerationProps} />)
+		renderWithDictionary(<PokemonData {...differentGenerationProps} />)
 
 		expect(screen.getByText('generation-iv')).toBeInTheDocument()
 	})
@@ -125,13 +134,13 @@ describe('PokemonData', () => {
 			species: 'Electric Mouse Pokémon',
 		}
 
-		render(<PokemonData {...differentSpeciesProps} />)
+		renderWithDictionary(<PokemonData {...differentSpeciesProps} />)
 
 		expect(screen.getByText('Electric Mouse Pokémon')).toBeInTheDocument()
 	})
 
 	it('should apply correct CSS classes for centering content', () => {
-		render(<PokemonData {...mockPokemonDataProps} />)
+		renderWithDictionary(<PokemonData {...mockPokemonDataProps} />)
 
 		const textContents = screen.getAllByTestId('card-content')
 		textContents.forEach(content => {
@@ -140,7 +149,7 @@ describe('PokemonData', () => {
 	})
 
 	it('should apply capitalize class to species and uppercase class to generation', () => {
-		render(<PokemonData {...mockPokemonDataProps} />)
+		renderWithDictionary(<PokemonData {...mockPokemonDataProps} />)
 
 		const textContents = screen.getAllByTestId('card-content')
 

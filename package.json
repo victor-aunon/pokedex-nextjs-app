@@ -19,13 +19,16 @@
 		"prepare": "husky"
 	},
 	"dependencies": {
+		"@formatjs/intl-localematcher": "^0.6.2",
 		"@radix-ui/react-select": "^2.2.6",
 		"@radix-ui/react-slot": "^1.2.3",
 		"@t3-oss/env-nextjs": "^0.12.0",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
+		"flag-icons": "^7.5.0",
 		"lucide-react": "^0.544.0",
 		"motion": "^12.23.13",
+		"negotiator": "^1.0.0",
 		"next": "^15.2.3",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0",
@@ -38,6 +41,7 @@
 		"@testing-library/jest-dom": "^6.8.0",
 		"@testing-library/react": "^16.3.0",
 		"@testing-library/user-event": "^14.6.1",
+		"@types/negotiator": "^0.6.4",
 		"@types/node": "^20.14.10",
 		"@types/react": "^19.0.0",
 		"@types/react-dom": "^19.0.0",
@@ -56,7 +60,9 @@
 		"vitest": "^3.2.4"
 	},
 	"lint-staged": {
-		"*.{js,jsx,ts,tsx,css}": ["biome check --write"]
+		"*.{js,jsx,ts,tsx,css}": [
+			"biome check --write"
+		]
 	},
 	"ct3aMetadata": {
 		"initVersion": "7.39.3"

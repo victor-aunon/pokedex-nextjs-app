@@ -1,4 +1,6 @@
+import en from '@/dictionaries/en.json'
 import PokemonSoundPlayer from '@/features/pokemons/presentation/components/PokemonSoundPlayer'
+import { DictionaryProvider } from '@/shared/providers/DictionaryProvider'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -46,6 +48,12 @@ vi.mock('@/shared/components/ui/atoms/Button', () => ({
 const mockPlay = vi.fn()
 const mockPause = vi.fn()
 
+const renderWithDictionary = (component: React.ReactElement) => {
+	return render(
+		<DictionaryProvider dictionary={en}>{component}</DictionaryProvider>,
+	)
+}
+
 beforeEach(() => {
 	mockPlay.mockClear()
 	mockPause.mockClear()
@@ -58,36 +66,45 @@ beforeEach(() => {
 
 describe('PokemonSoundPlayer', () => {
 	const defaultProps = {
+		dict: en.detail.player,
 		sound: 'https://example.com/pikachu.wav',
 		pokemonName: 'pikachu',
 	}
 
 	it('should render play button when sound is available', () => {
-		render(<PokemonSoundPlayer {...defaultProps} />)
+		renderWithDictionary(<PokemonSoundPlayer {...defaultProps} />)
 
 		expect(screen.getByTestId('play-button')).toBeInTheDocument()
-		expect(screen.getByText('Play Sound')).toBeInTheDocument()
+		expect(screen.getByText('Play sound')).toBeInTheDocument()
 		expect(screen.getByTestId('volume2-icon')).toBeInTheDocument()
 	})
 
 	it('should not render anything when sound is null', () => {
-		const { container } = render(
-			<PokemonSoundPlayer sound={null} pokemonName="pikachu" />,
+		const { container } = renderWithDictionary(
+			<PokemonSoundPlayer
+				dict={en.detail.player}
+				sound={null}
+				pokemonName="pikachu"
+			/>,
 		)
 
 		expect(container.firstChild).toBeNull()
 	})
 
 	it('should not render anything when sound is empty string', () => {
-		const { container } = render(
-			<PokemonSoundPlayer sound="" pokemonName="pikachu" />,
+		const { container } = renderWithDictionary(
+			<PokemonSoundPlayer
+				dict={en.detail.player}
+				sound=""
+				pokemonName="pikachu"
+			/>,
 		)
 
 		expect(container.firstChild).toBeNull()
 	})
 
 	it('should have correct button attributes', () => {
-		render(<PokemonSoundPlayer {...defaultProps} />)
+		renderWithDictionary(<PokemonSoundPlayer {...defaultProps} />)
 
 		const button = screen.getByTestId('play-button')
 		expect(button).toHaveAttribute('title', 'Play pikachu sound')
@@ -95,7 +112,7 @@ describe('PokemonSoundPlayer', () => {
 	})
 
 	it('should render audio element with correct attributes', () => {
-		render(<PokemonSoundPlayer {...defaultProps} />)
+		renderWithDictionary(<PokemonSoundPlayer {...defaultProps} />)
 
 		const audio = screen.getByLabelText('pikachu sound')
 		expect(audio).toBeInTheDocument()
@@ -103,7 +120,9 @@ describe('PokemonSoundPlayer', () => {
 	})
 
 	it('should render multiple audio source formats', () => {
-		const { container } = render(<PokemonSoundPlayer {...defaultProps} />)
+		const { container } = renderWithDictionary(
+			<PokemonSoundPlayer {...defaultProps} />,
+		)
 
 		const sources = container.querySelectorAll('source')
 		expect(sources).toHaveLength(3)
@@ -120,7 +139,7 @@ describe('PokemonSoundPlayer', () => {
 	it('should call play when button is clicked', async () => {
 		mockPlay.mockResolvedValue(undefined)
 
-		render(<PokemonSoundPlayer {...defaultProps} />)
+		renderWithDictionary(<PokemonSoundPlayer {...defaultProps} />)
 
 		const button = screen.getByTestId('play-button')
 		fireEvent.click(button)
@@ -133,7 +152,7 @@ describe('PokemonSoundPlayer', () => {
 	it('should show playing state when audio is playing', async () => {
 		mockPlay.mockResolvedValue(undefined)
 
-		render(<PokemonSoundPlayer {...defaultProps} />)
+		renderWithDictionary(<PokemonSoundPlayer {...defaultProps} />)
 
 		const button = screen.getByTestId('play-button')
 		fireEvent.click(button)
@@ -150,7 +169,9 @@ describe('PokemonSoundPlayer', () => {
 	it('should handle audio end event', async () => {
 		mockPlay.mockResolvedValue(undefined)
 
-		const { container } = render(<PokemonSoundPlayer {...defaultProps} />)
+		const { container } = renderWithDictionary(
+			<PokemonSoundPlayer {...defaultProps} />,
+		)
 
 		const button = screen.getByTestId('play-button')
 		fireEvent.click(button)
@@ -166,13 +187,15 @@ describe('PokemonSoundPlayer', () => {
 		}
 
 		await waitFor(() => {
-			expect(screen.getByText('Play Sound')).toBeInTheDocument()
+			expect(screen.getByText('Play sound')).toBeInTheDocument()
 			expect(button).not.toBeDisabled()
 		})
 	})
 
 	it('should handle audio error', async () => {
-		const { container } = render(<PokemonSoundPlayer {...defaultProps} />)
+		const { container } = renderWithDictionary(
+			<PokemonSoundPlayer {...defaultProps} />,
+		)
 
 		const audio = container.querySelector('audio')
 		if (audio) {
@@ -194,7 +217,7 @@ describe('PokemonSoundPlayer', () => {
 		// Spy on console.error to verify error logging
 		const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
 
-		render(<PokemonSoundPlayer {...defaultProps} />)
+		renderWithDictionary(<PokemonSoundPlayer {...defaultProps} />)
 
 		const button = screen.getByTestId('play-button')
 		fireEvent.click(button)
@@ -218,7 +241,7 @@ describe('PokemonSoundPlayer', () => {
 	it('should not play when already playing', async () => {
 		mockPlay.mockResolvedValue(undefined)
 
-		render(<PokemonSoundPlayer {...defaultProps} />)
+		renderWithDictionary(<PokemonSoundPlayer {...defaultProps} />)
 
 		const button = screen.getByTestId('play-button')
 		fireEvent.click(button)
@@ -235,7 +258,9 @@ describe('PokemonSoundPlayer', () => {
 	})
 
 	it('should not play when there is an error', async () => {
-		const { container } = render(<PokemonSoundPlayer {...defaultProps} />)
+		const { container } = renderWithDictionary(
+			<PokemonSoundPlayer {...defaultProps} />,
+		)
 
 		// Trigger error first
 		const audio = container.querySelector('audio')
@@ -256,8 +281,9 @@ describe('PokemonSoundPlayer', () => {
 	})
 
 	it('should handle different Pokemon names', () => {
-		render(
+		renderWithDictionary(
 			<PokemonSoundPlayer
+				dict={en.detail.player}
 				sound="https://example.com/charizard.wav"
 				pokemonName="charizard"
 			/>,

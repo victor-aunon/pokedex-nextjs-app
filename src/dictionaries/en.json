@@ -1,0 +1,94 @@
+{
+	"meta": {
+		"title": "Pokédex - Explore the Pokémon World",
+		"description": "Discover all Pokémon with our interactive Pokédex. Explore species, types, generations, and more detailed information."
+	},
+	"search": {
+		"placeholder": "Search for a Pokémon...",
+		"clear": "Clear filters",
+		"selectGeneration": "Select a generation",
+		"selectType": "Select a type",
+		"generation": "Generation"
+	},
+	"types": {
+		"bug": "Bug",
+		"dark": "Dark",
+		"dragon": "Dragon",
+		"electric": "Electric",
+		"fairy": "Fairy",
+		"fighting": "Fighting",
+		"fire": "Fire",
+		"flying": "Flying",
+		"ghost": "Ghost",
+		"grass": "Grass",
+		"ground": "Ground",
+		"ice": "Ice",
+		"normal": "Normal",
+		"poison": "Poison",
+		"psychic": "Psychic",
+		"rock": "Rock",
+		"steel": "Steel",
+		"water": "Water"
+	},
+	"pagination": {
+		"label": "Pagination Navigation",
+		"previous": "Previous",
+		"next": "Next",
+		"goPrevious": "Go to previous page",
+		"goNext": "Go to next page",
+		"morePages": "More pages"
+	},
+	"detail": {
+		"meta": {
+			"title": "Pokédex - {name}",
+			"description": "Detalles de {name}"
+		},
+		"return": "Go to Pokédex",
+		"legendary": "Legendary",
+		"mythical": "Mythical",
+		"stats": "Base stats",
+		"height": "Height",
+		"weight": "Weight",
+		"generation": "Generation",
+		"species": "Species",
+		"description": "Description",
+		"hp": "Hit points",
+		"attack": "Attack",
+		"defense": "Defense",
+		"specialAttack": "Special Attack",
+		"specialDefense": "Special Defense",
+		"speed": "Speed",
+		"chain": "Evolution Chain",
+		"player": {
+			"play": "Play sound",
+			"playing": "Playing...",
+			"title": "Play {pokemonName} sound",
+			"aria-label": "{pokemonName} sound",
+			"label": "Pokemon sound",
+			"error": "Error",
+			"notSupported": "Your browser does not support the audio element"
+		}
+	},
+	"footer": {
+		"description": "Discover all Pokémon with our interactive Pokédex. Explore species, types, generations, and more detailed information.",
+		"resources": "Resources",
+		"developer": "Developer",
+		"madeWith": "Made with ",
+		"andNextJS": " and Next.js",
+		"disclaimer": "Pokémon and Pokémon character names are registered trademarks of Nintendo. This application is not affiliated with Nintendo, Game Freak, or The Pokémon Company."
+	},
+	"notFound": {
+		"notFound": "Page Not Found",
+		"message": "Oops! It looks like this page has splashed away like Magikarp! The page you're looking for doesn't exist.",
+		"return": "Return to Pokédex",
+		"goBack": "Go Back"
+	},
+	"noResults": {
+		"notFound": "No Pokémon Found",
+		"noResultsFor": "No results found for ",
+		"message": "Even Magikarp couldn't find what you're looking for! Try a different search term.",
+		"messageWithFilters": "Your current filters didn't match any Pokémon. Try adjusting your search criteria.",
+		"clearFilters": "Clear Filters",
+		"try": "Try searching for \"Pikachu\" or \"Blastoise\""
+	}
+}

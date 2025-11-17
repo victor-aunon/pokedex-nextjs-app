@@ -4,15 +4,16 @@ import Link from 'next/link'
 import { Button } from './Button'
 
 interface GoBackLinkProps {
+	goBackText: string
 	href?: string
 	children?: React.ReactNode
 }
 
-export function GoBackButton({ href, children }: GoBackLinkProps) {
+export function GoBackButton({ goBackText, href, children }: GoBackLinkProps) {
 	if (href) {
 		return (
 			<Button variant="outline" size="lg" asChild className="w-fit">
-				<Link href={href}>{children || 'Go Back'}</Link>
+				<Link href={href}>{children || goBackText}</Link>
 			</Button>
 		)
 	}
@@ -24,7 +25,7 @@ export function GoBackButton({ href, children }: GoBackLinkProps) {
 			onClick={() => window.history.back()}
 			className="w-fit"
 		>
-			{children || 'Go Back'}
+			{children || goBackText}
 		</Button>
 	)
 }

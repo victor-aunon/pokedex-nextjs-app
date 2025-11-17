@@ -9,18 +9,21 @@ import {
 	PaginationNext,
 	PaginationPrevious,
 } from '@/shared/components/ui/molecules/PaginationWithoutNavigation'
+import type { Dictionary } from '@/shared/providers/DictionaryProvider'
 import { useMemo } from 'react'
 
 interface PaginationProps extends React.ComponentProps<'nav'> {
 	totalPages: number
 	currentPage: number
 	setCurrentPage: (value: number) => void
+	dict: Dictionary['pagination']
 }
 
 export function UIPagination({
 	totalPages,
 	currentPage,
 	setCurrentPage,
+	dict,
 	...props
 }: PaginationProps) {
 	const paginationSlices = useMemo(() => {
@@ -35,13 +38,14 @@ export function UIPagination({
 	}, [totalPages, currentPage])
 
 	return (
-		<Pagination {...props} aria-label="Pagination Navigation">
+		<Pagination dict={dict} {...props}>
 			<PaginationContent>
 				<PaginationItem>
 					<PaginationPrevious
 						className="text-lg"
 						onClick={() => setCurrentPage(Math.max(currentPage - 1, 1))}
 						disabled={currentPage === 1}
+						dict={dict}
 					/>
 				</PaginationItem>
 				{/* First page */}
@@ -57,7 +61,7 @@ export function UIPagination({
 				{/* Show ellipsis only if needed */}
 				{paginationSlices[1]?.[0] - 1 > paginationSlices[0] && (
 					<PaginationItem>
-						<PaginationEllipsis />
+						<PaginationEllipsis dict={dict} />
 					</PaginationItem>
 				)}
 				{/* Show page numbers */}
@@ -75,7 +79,7 @@ export function UIPagination({
 				{/* Show ellipsis only if needed */}
 				{paginationSlices[1]?.at(-1) + 1 < paginationSlices[2] && (
 					<PaginationItem>
-						<PaginationEllipsis />
+						<PaginationEllipsis dict={dict} />
 					</PaginationItem>
 				)}
 				{/* Last page */}
@@ -97,6 +101,7 @@ export function UIPagination({
 							setCurrentPage(Math.min(currentPage + 1, totalPages))
 						}
 						disabled={currentPage === totalPages}
+						dict={dict}
 					/>
 				</PaginationItem>
 			</PaginationContent>

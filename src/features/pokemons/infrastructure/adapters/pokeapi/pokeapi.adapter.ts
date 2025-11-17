@@ -25,6 +25,7 @@ export function pokeapiRepository(): PokemonRepository {
 	async function getPokemons(
 		itemsPerPage: number,
 		page = 1,
+		language = 'en',
 	): Promise<Pagination<Pokemon>> {
 		let listData: PokemonsListResponseDTO
 		const baseResponse = {
@@ -64,7 +65,7 @@ export function pokeapiRepository(): PokemonRepository {
 				const pokemonsBase = await Promise.all(pokemonsBasePromises)
 
 				const pokemonsSpeciesPromises = pokemonsBase.map(pokemon =>
-					getPokemonSpecies(pokemon.species),
+					getPokemonSpecies(pokemon.species, language),
 				)
 				const pokemonsSpecies = await Promise.all(pokemonsSpeciesPromises)
 
@@ -100,6 +101,7 @@ export function pokeapiRepository(): PokemonRepository {
 		type?: PokemonTypes,
 		generation?: PokemonGenerations,
 		itemsPerPage = 1500,
+		language = 'en',
 	): Promise<Pagination<Pokemon>> {
 		let listData: PokemonsListResponseDTO
 		const baseResponse = {
@@ -142,7 +144,7 @@ export function pokeapiRepository(): PokemonRepository {
 
 			try {
 				const pokemonsSpeciesPromises = pokemonsBase.map(({ species }) =>
-					getPokemonSpecies(species),
+					getPokemonSpecies(species, language),
 				)
 
 				const pokemonsSpecies = await Promise.all(pokemonsSpeciesPromises)
@@ -243,7 +245,6 @@ export function pokeapiRepository(): PokemonRepository {
 				}
 				throw new Error('Error fetching pokemon species')
 			}
-
 			const speciesData = (await response.json()) as PokemonSpeciesResponseDTO
 
 			// Access the flavor text entries to get the description in the desired language

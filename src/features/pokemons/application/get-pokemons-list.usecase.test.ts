@@ -76,7 +76,7 @@ describe('Get Pokémons List Use Case', () => {
 
 		// Assert
 		expect(result).toEqual(mockPokemonsPagination)
-		expect(mockPokemonRepository.getPokemons).toHaveBeenCalledWith(20, 1)
+		expect(mockPokemonRepository.getPokemons).toHaveBeenCalledWith(20, 1, 'en')
 		expect(mockPokemonRepository.getPokemons).toHaveBeenCalledTimes(1)
 	})
 
@@ -101,6 +101,8 @@ describe('Get Pokémons List Use Case', () => {
 		expect(mockPokemonRepository.getAllFilteredPokemons).toHaveBeenCalledWith(
 			PokemonTypes.Fire,
 			PokemonGenerations.Generation1,
+			20,
+			'en',
 		)
 		expect(mockPokemonRepository.getAllFilteredPokemons).toHaveBeenCalledTimes(
 			1,

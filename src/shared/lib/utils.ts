@@ -29,3 +29,13 @@ export function debounce<T extends (...args: any[]) => void>(
 		timeoutId = setTimeout(() => func(...args), delay)
 	}) as T
 }
+
+export function formatString(
+	template: string,
+	params: Record<string, string | number>,
+) {
+	return template.replace(/{(\w+)}/g, (match, key) => {
+		// Si el parámetro existe, lo reemplaza; si no, deja el {key} original
+		return typeof params[key] !== 'undefined' ? String(params[key]) : match
+	})
+}

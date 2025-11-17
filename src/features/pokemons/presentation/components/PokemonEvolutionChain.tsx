@@ -1,22 +1,27 @@
 import type { PokemonItem } from '@/features/pokemons/domain/entities/pokemon'
+import type { Locale } from '@/i18n-config'
 import { Card } from '@/shared/components/ui/molecules'
+import type { Dictionary } from '@/shared/providers/DictionaryProvider'
 import { Triangle } from 'lucide-react'
 import Link from 'next/link'
 
 interface PokemonEvolutionChainProps {
 	currentPokemonName: PokemonItem['name']
 	pokemonChain: PokemonItem[]
+	dict: Dictionary['detail']
 	fromHomeParams?: string
+	lang?: Locale
 }
 
 export default function PokemonEvolutionChain({
 	currentPokemonName,
 	pokemonChain,
+	dict,
 	fromHomeParams,
+	lang = 'en',
 }: PokemonEvolutionChainProps) {
-	// Generate href with preserved params
 	const getPokemonUrl = (pokemonName: string) => {
-		const baseUrl = `/pokemons/${pokemonName}`
+		const baseUrl = `/${lang}/pokemons/${pokemonName}`
 		return fromHomeParams
 			? `${baseUrl}?from_home=${encodeURIComponent(fromHomeParams)}`
 			: baseUrl
@@ -25,7 +30,7 @@ export default function PokemonEvolutionChain({
 	return (
 		<Card>
 			<h3 className="mb-6 text-heading-md text-secondary-foreground">
-				Evolution Chain
+				{dict.chain}
 			</h3>
 
 			<div className="flex flex-wrap items-center justify-center gap-4">

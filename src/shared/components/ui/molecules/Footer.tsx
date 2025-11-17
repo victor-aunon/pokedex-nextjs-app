@@ -1,7 +1,8 @@
+import type { Dictionary } from '@/shared/providers/DictionaryProvider'
 import { ExternalLink, Github, Heart } from 'lucide-react'
 import Link from 'next/link'
 
-export function Footer() {
+export function Footer({ dict }: { dict: Dictionary['footer'] }) {
 	return (
 		<footer className="border-t bg-card">
 			<div className="container mx-auto max-w-screen-2xl px-4 py-8">
@@ -9,15 +10,12 @@ export function Footer() {
 					{/* Información del proyecto */}
 					<div className="space-y-3">
 						<h3 className="text-heading-md">Pokédex</h3>
-						<p className="text-muted-foreground text-sm">
-							Explore the world of Pokémon with our interactive Pokédex.
-							Discover species, types, and generations.
-						</p>
+						<p className="text-muted-foreground text-sm">{dict.description} </p>
 					</div>
 
 					{/* Recursos */}
 					<div className="space-y-3">
-						<h3 className="text-heading-md">Resources</h3>
+						<h3 className="text-heading-md">{dict.resources}</h3>
 						<ul className="space-y-2 text-sm">
 							<li>
 								<Link
@@ -68,7 +66,7 @@ export function Footer() {
 
 					{/* Desarrollador */}
 					<div className="space-y-3">
-						<h3 className="text-heading-md">Developer</h3>
+						<h3 className="text-heading-md">{dict.developer}</h3>
 						<ul className="space-y-2 text-sm">
 							<li>
 								<a
@@ -88,16 +86,15 @@ export function Footer() {
 				{/* Línea divisoria */}
 				<div className="mt-8 mb-4 border-t pt-6">
 					<p className="mx-auto flex w-fit items-center gap-1 text-muted-foreground text-sm">
-						Made with
-						<Heart className="h-4 w-4 fill-current text-primary" /> and Next.js
+						{dict.madeWith}
+						<Heart className="h-4 w-4 fill-current text-primary" />
+						{dict.andNextJS}
 					</p>
 				</div>
 
 				{/* Disclaimer */}
 				<p className="mx-auto w-fit w-max-[65ch] text-center text-muted-foreground text-xs">
-					Pokémon and Pokémon character names are registered trademarks of
-					Nintendo. This application is not affiliated with Nintendo, Game
-					Freak, or The Pokémon Company.
+					{dict.disclaimer}
 				</p>
 			</div>
 		</footer>

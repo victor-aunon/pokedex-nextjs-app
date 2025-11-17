@@ -14,10 +14,16 @@ export async function getPokemonsListUseCase(
 		page,
 		generation,
 		type,
+		lang = 'en',
 	} = input
 
 	if (generation || type)
-		return await pokemonRepository.getAllFilteredPokemons(type, generation)
+		return await pokemonRepository.getAllFilteredPokemons(
+			type,
+			generation,
+			itemsPerPage,
+			lang,
+		)
 
-	return await pokemonRepository.getPokemons(itemsPerPage, page)
+	return await pokemonRepository.getPokemons(itemsPerPage, page, lang)
 }

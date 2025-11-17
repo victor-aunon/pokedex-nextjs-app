@@ -1,5 +1,7 @@
+import en from '@/dictionaries/en.json'
 import type { Pokemon } from '@/features/pokemons/domain/entities/pokemon'
 import PokemonStats from '@/features/pokemons/presentation/components/PokemonStats'
+import { DictionaryProvider } from '@/shared/providers/DictionaryProvider'
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
@@ -54,6 +56,12 @@ vi.mock('@/shared/components/ui/molecules', () => {
 	return { Card }
 })
 
+const renderWithDictionary = (component: React.ReactElement) => {
+	return render(
+		<DictionaryProvider dictionary={en}>{component}</DictionaryProvider>,
+	)
+}
+
 const mockStats: Pokemon['stats'] = {
 	hp: 45,
 	attack: 49,
@@ -65,13 +73,13 @@ const mockStats: Pokemon['stats'] = {
 
 describe('PokemonStats', () => {
 	it('should render base stats title', () => {
-		render(<PokemonStats stats={mockStats} />)
+		renderWithDictionary(<PokemonStats stats={mockStats} dict={en.detail} />)
 
-		expect(screen.getByText('Base Stats')).toBeInTheDocument()
+		expect(screen.getByText('Base stats')).toBeInTheDocument()
 	})
 
 	it('should render all stat labels correctly', () => {
-		render(<PokemonStats stats={mockStats} />)
+		renderWithDictionary(<PokemonStats stats={mockStats} dict={en.detail} />)
 
 		expect(screen.getByText('Hit points')).toBeInTheDocument()
 		expect(screen.getByText('Attack')).toBeInTheDocument()
@@ -82,7 +90,7 @@ describe('PokemonStats', () => {
 	})
 
 	it('should render all stat values correctly', () => {
-		render(<PokemonStats stats={mockStats} />)
+		renderWithDictionary(<PokemonStats stats={mockStats} dict={en.detail} />)
 
 		// Check HP value (45) - there are 2 instances: HP and Speed
 		const valueElements45 = screen.getAllByText('45')
@@ -98,7 +106,7 @@ describe('PokemonStats', () => {
 	})
 
 	it('should render all stat icons', () => {
-		render(<PokemonStats stats={mockStats} />)
+		renderWithDictionary(<PokemonStats stats={mockStats} dict={en.detail} />)
 
 		expect(screen.getByTestId('heart-icon')).toBeInTheDocument()
 		expect(screen.getByTestId('sword-icon')).toBeInTheDocument()
@@ -118,7 +126,9 @@ describe('PokemonStats', () => {
 			speed: 120, // 80%
 		}
 
-		const { container } = render(<PokemonStats stats={highStats} />)
+		const { container } = renderWithDictionary(
+			<PokemonStats stats={highStats} dict={en.detail} />,
+		)
 
 		const progressBars = container.querySelectorAll('div[style*="width"]')
 
@@ -142,7 +152,9 @@ describe('PokemonStats', () => {
 			speed: 150, // High stat (should use chart-5)
 		}
 
-		const { container } = render(<PokemonStats stats={mixedStats} />)
+		const { container } = renderWithDictionary(
+			<PokemonStats stats={mixedStats} dict={en.detail} />,
+		)
 
 		// Find progress bars by their transition class (more specific selector)
 		const progressBars = container.querySelectorAll(
@@ -168,7 +180,7 @@ describe('PokemonStats', () => {
 			speed: 0,
 		}
 
-		render(<PokemonStats stats={zeroStats} />)
+		renderWithDictionary(<PokemonStats stats={zeroStats} dict={en.detail} />)
 
 		// All values should be displayed as 0
 		const zeroValues = screen.getAllByText('0')
@@ -185,7 +197,7 @@ describe('PokemonStats', () => {
 			speed: 255,
 		}
 
-		render(<PokemonStats stats={maxStats} />)
+		renderWithDictionary(<PokemonStats stats={maxStats} dict={en.detail} />)
 
 		// All values should be displayed as 255
 		const maxValues = screen.getAllByText('255')
@@ -193,7 +205,9 @@ describe('PokemonStats', () => {
 	})
 
 	it('should render stat bars with proper styling', () => {
-		const { container } = render(<PokemonStats stats={mockStats} />)
+		const { container } = renderWithDictionary(
+			<PokemonStats stats={mockStats} dict={en.detail} />,
+		)
 
 		// Check for progress bar containers
 		const progressContainers = container.querySelectorAll(
@@ -215,7 +229,9 @@ describe('PokemonStats', () => {
 	})
 
 	it('should have proper grid layout', () => {
-		const { container } = render(<PokemonStats stats={mockStats} />)
+		const { container } = renderWithDictionary(
+			<PokemonStats stats={mockStats} dict={en.detail} />,
+		)
 
 		const gridContainer = container.querySelector('.grid')
 		expect(gridContainer).toHaveClass(
@@ -227,7 +243,7 @@ describe('PokemonStats', () => {
 	})
 
 	it('should render card with correct classes', () => {
-		render(<PokemonStats stats={mockStats} />)
+		renderWithDictionary(<PokemonStats stats={mockStats} dict={en.detail} />)
 
 		const card = screen.getByTestId('card')
 		expect(card).toHaveClass('mb-6', 'p-6')
@@ -243,7 +259,7 @@ describe('PokemonStats', () => {
 			speed: 45.0,
 		}
 
-		render(<PokemonStats stats={floatStats} />)
+		renderWithDictionary(<PokemonStats stats={floatStats} dict={en.detail} />)
 
 		expect(screen.getByText('45.7')).toBeInTheDocument()
 		expect(screen.getByText('49.2')).toBeInTheDocument()

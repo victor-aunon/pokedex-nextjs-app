@@ -1,5 +1,7 @@
 import { Zap } from 'lucide-react'
 import Link from 'next/link'
+import { Suspense } from 'react'
+import { LanguageSelector } from './LanguageSelector'
 
 export function Header() {
 	return (
@@ -12,6 +14,9 @@ export function Header() {
 					</div>
 					<h1 className="text-heading-lg">Pokédex</h1>
 				</Link>
+				<Suspense>
+					<LanguageSelector />
+				</Suspense>
 			</div>
 		</header>
 	)

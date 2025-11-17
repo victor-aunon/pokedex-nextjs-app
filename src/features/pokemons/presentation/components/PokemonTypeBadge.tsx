@@ -1,8 +1,12 @@
 'use client'
 
+import { PokemonTypes } from '@/features/pokemons/domain/enums/types.enum'
 import { getPokemonTypeColor } from '@/shared/lib/pokemon-utils'
+import { useDictionary } from '@/shared/providers/DictionaryProvider'
 
 export default function PokemonTypeBadge({ type }: { type: string }) {
+	const dict = useDictionary()
+
 	return (
 		<span
 			key={type}
@@ -12,11 +16,16 @@ export default function PokemonTypeBadge({ type }: { type: string }) {
 			<div
 				className={`icon remove-shadow${type} scale-75`}
 				key={`pokemon-${type}`}
-				title={type}
+				title={dict.types[type as PokemonTypes]}
 			>
-				<img src={`/img/types/${type}.svg`} alt={type} />
+				<img
+					src={`/img/types/${type}.svg`}
+					alt={dict.types[type as PokemonTypes]}
+				/>
 			</div>
-			<span className="ml-[-5px] capitalize">{type}</span>
+			<span className="ml-[-5px] capitalize">
+				{dict.types[type as PokemonTypes]}
+			</span>
 		</span>
 	)
 }

@@ -1,5 +1,6 @@
 import type { Pokemon } from '@/features/pokemons/domain/entities/pokemon'
 import { Card } from '@/shared/components/ui/molecules'
+import type { Dictionary } from '@/shared/providers/DictionaryProvider'
 import {
 	Heart,
 	type LucideProps,
@@ -12,9 +13,10 @@ import {
 
 interface PokemonStatsProps {
 	stats: Pokemon['stats']
+	dict: Dictionary['detail']
 }
 
-export default function PokemonStats({ stats }: PokemonStatsProps) {
+export default function PokemonStats({ stats, dict }: PokemonStatsProps) {
 	const getGaugeColor = (value: number): string => {
 		if (value <= 50) return 'var(--chart-3)'
 		if (value <= 100) return 'var(--chart-4)'
@@ -32,17 +34,19 @@ export default function PokemonStats({ stats }: PokemonStatsProps) {
 
 	return (
 		<Card className="mb-6 p-6">
-			<h2 className="mb-6 text-card-foreground text-heading-md">Base Stats</h2>
+			<h2 className="mb-6 text-card-foreground text-heading-md">
+				{dict.stats}
+			</h2>
 
 			<div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
 				{Object.entries(stats).map(([statName, value]) => {
 					const statLabels: Record<string, string> = {
-						hp: 'Hit points',
-						attack: 'Attack',
-						defense: 'Defense',
-						specialAttack: 'Special Attack',
-						specialDefense: 'Special Defense',
-						speed: 'Speed',
+						hp: dict.hp,
+						attack: dict.attack,
+						defense: dict.defense,
+						specialAttack: dict.specialAttack,
+						specialDefense: dict.specialDefense,
+						speed: dict.speed,
 					}
 
 					const percentage = Math.min((value / 150) * 100, 100)

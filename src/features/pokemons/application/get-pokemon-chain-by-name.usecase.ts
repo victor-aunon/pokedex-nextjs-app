@@ -1,9 +1,11 @@
 import type { PokemonItem } from '@/features/pokemons/domain/entities/pokemon'
 import type { PokemonRepository } from '@/features/pokemons/domain/repositories/pokemon.repository'
 import { pokeapiRepository } from '@/features/pokemons/infrastructure/adapters/pokeapi/pokeapi.adapter'
+import type { Locale } from '@/i18n-config'
 
 export async function getPokemonChainByNameUseCase(
 	name: string,
+	lang: Locale,
 ): Promise<PokemonItem[]> {
 	const pokemonRepository: PokemonRepository = pokeapiRepository()
 
@@ -14,6 +16,7 @@ export async function getPokemonChainByNameUseCase(
 
 	const pokemonExtraData = await pokemonRepository.getPokemonSpecies(
 		pokemonBase.species,
+		lang,
 	)
 	let evolutionChain: string[] = []
 	if (pokemonExtraData.evolutionChain) {

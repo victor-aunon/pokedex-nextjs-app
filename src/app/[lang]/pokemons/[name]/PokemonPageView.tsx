@@ -8,22 +8,28 @@ import {
 	PokemonData,
 	PokemonStats,
 } from '@/features/pokemons/presentation/components'
+import type { Locale } from '@/i18n-config'
 import TiltedCard from '@/shared/components/TiltedCard'
 import { GoBackButton } from '@/shared/components/ui/atoms/GoBackButton'
 import { Card } from '@/shared/components/ui/molecules'
+import type { Dictionary } from '@/shared/providers/DictionaryProvider'
 import { ArrowLeft, Sparkle, Zap } from 'lucide-react'
 import { notFound } from 'next/navigation'
 
 interface PokemonPageViewProps {
 	name: string
+	dict: Dictionary
+	lang?: Locale
 	fromHomeParams?: string
 }
 
 export async function PokemonPageView({
 	name,
+	dict,
+	lang = 'en',
 	fromHomeParams,
 }: PokemonPageViewProps) {
-	const pokemonChain = await getPokemonChainByNameUseCase(name)
+	const pokemonChain = await getPokemonChainByNameUseCase(name, lang)
 
 	const currentPokemon =
 		pokemonChain.find(p => p.name.toLowerCase() === name.toLowerCase()) ||
@@ -34,17 +40,17 @@ export async function PokemonPageView({
 	}
 
 	const homeUrl = fromHomeParams
-		? `/?${decodeURIComponent(fromHomeParams)}`
-		: '/'
+		? `/${lang}?${decodeURIComponent(fromHomeParams)}`
+		: `/${lang}`
 
 	return (
 		<section className="min-h-screen ">
 			<div className="container mx-auto max-w-6xl px-4 py-8">
 				{/* Header con botón de regreso */}
 				<div className="mb-8 flex items-center gap-4">
-					<GoBackButton href={homeUrl}>
+					<GoBackButton href={homeUrl} goBackText={dict.notFound.goBack}>
 						<ArrowLeft className="h-5 w-5" />
-						Go to Pokedex
+						{dict.detail.return}
 					</GoBackButton>
 				</div>
 
@@ -76,19 +82,20 @@ export async function PokemonPageView({
 							<PokemonSoundPlayer
 								sound={currentPokemon.sound}
 								pokemonName={currentPokemon.name}
+								dict={dict.detail.player}
 							/>
 							{/* Badges especiales */}
 							<div className="flex gap-2">
 								{currentPokemon.isLegendary && (
 									<span className="inline-flex items-center gap-1 rounded-full bg-yellow-900 px-3 py-1 font-bold text-body-md text-yellow-200">
 										<Zap className="h-5 w-5" />
-										Legendary
+										{dict.detail.legendary}
 									</span>
 								)}
 								{currentPokemon.isMythical && (
 									<span className="inline-flex items-center gap-1 rounded-full bg-purple-900 px-3 py-1 font-bold text-body-md text-purple-200">
 										<Sparkle className="h-5 w-5" />
-										Mythical
+										{dict.detail.mythical}
 									</span>
 								)}
 							</div>
@@ -116,13 +123,14 @@ export async function PokemonPageView({
 							weight={currentPokemon.weightInKg}
 							generation={currentPokemon.generation}
 							species={currentPokemon.species}
+							dict={dict.detail}
 						/>
 
 						{/* Descripción */}
 						{currentPokemon.description && (
 							<Card>
 								<h3 className="mb-2 text-card-foreground text-heading-md">
-									Description
+									{dict.detail.description}
 								</h3>
 								<p className="text-body-md text-muted-foreground">
 									{currentPokemon.description}
@@ -133,14 +141,15 @@ export async function PokemonPageView({
 				</div>
 
 				{/* Estadísticas */}
-				<PokemonStats stats={currentPokemon.stats} />
+				<PokemonStats stats={currentPokemon.stats} dict={dict.detail} />
 
-				{/* Cadena de evolución */}
 				{pokemonChain.length > 1 && (
 					<PokemonEvolutionChain
 						currentPokemonName={currentPokemon.name}
 						pokemonChain={pokemonChain}
 						fromHomeParams={fromHomeParams}
+						dict={dict.detail}
+						lang={lang}
 					/>
 				)}
 			</div>

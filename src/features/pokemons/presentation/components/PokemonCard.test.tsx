@@ -1,4 +1,6 @@
+import en from '@/dictionaries/en.json'
 import PokemonCard from '@/features/pokemons/presentation/components/PokemonCard'
+import { DictionaryProvider } from '@/shared/providers/DictionaryProvider'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -18,6 +20,12 @@ vi.mock('next/link', () => ({
 // Mock CSS file import
 vi.mock('./PokemonCard.css', () => ({}))
 
+const renderWithDictionary = (component: React.ReactElement) => {
+	return render(
+		<DictionaryProvider dictionary={en}>{component}</DictionaryProvider>,
+	)
+}
+
 const mockPokemonProps = {
 	avatarUrl: 'https://example.com/pikachu.png',
 	name: 'pikachu',
@@ -25,8 +33,9 @@ const mockPokemonProps = {
 	generation: 'generation-i',
 	types: ['electric'],
 	className: 'custom-class',
-	enableTilt: false, // Disable tilt to avoid complex animations in tests
+	enableTilt: false,
 	enableMobileTilt: false,
+	lang: 'en' as const,
 }
 
 describe('PokemonCard', () => {
@@ -36,7 +45,7 @@ describe('PokemonCard', () => {
 	})
 
 	it('should render Pokemon basic information correctly', () => {
-		render(<PokemonCard {...mockPokemonProps} />)
+		renderWithDictionary(<PokemonCard {...mockPokemonProps} />)
 
 		// Check that Pokemon name is displayed
 		expect(screen.getByText('PIKACHU')).toBeInTheDocument()
@@ -51,7 +60,7 @@ describe('PokemonCard', () => {
 	})
 
 	it('should render Pokemon image with correct attributes', () => {
-		render(<PokemonCard {...mockPokemonProps} />)
+		renderWithDictionary(<PokemonCard {...mockPokemonProps} />)
 
 		const avatarImage = screen.getByAltText('pikachu avatar')
 		expect(avatarImage).toBeInTheDocument()
@@ -69,11 +78,11 @@ describe('PokemonCard', () => {
 			name: 'bulbasaur',
 		}
 
-		render(<PokemonCard {...multiTypeProps} />)
+		renderWithDictionary(<PokemonCard {...multiTypeProps} />)
 
 		// Check that type images are rendered
-		const grassTypeImg = screen.getByAltText('grass')
-		const poisonTypeImg = screen.getByAltText('poison')
+		const grassTypeImg = screen.getByAltText('Grass')
+		const poisonTypeImg = screen.getByAltText('Poison')
 
 		expect(grassTypeImg).toBeInTheDocument()
 		expect(grassTypeImg).toHaveAttribute('src', 'img/types/grass.svg')
@@ -83,10 +92,10 @@ describe('PokemonCard', () => {
 	})
 
 	it('should create correct navigation link', () => {
-		render(<PokemonCard {...mockPokemonProps} />)
+		renderWithDictionary(<PokemonCard {...mockPokemonProps} />)
 
 		const link = screen.getByRole('link')
-		expect(link).toHaveAttribute('href', '/pokemons/pikachu')
+		expect(link).toHaveAttribute('href', '/en/pokemons/pikachu')
 	})
 
 	it('should display evolution indicator when evolutionPlace is provided', () => {
@@ -95,20 +104,20 @@ describe('PokemonCard', () => {
 			evolutionPlace: 2,
 		}
 
-		render(<PokemonCard {...evolutionProps} />)
+		renderWithDictionary(<PokemonCard {...evolutionProps} />)
 
 		expect(screen.getByText('Evo. 2')).toBeInTheDocument()
 		expect(screen.getByTitle('Evolution level 2')).toBeInTheDocument()
 	})
 
 	it('should not display evolution indicator when evolutionPlace is not provided', () => {
-		render(<PokemonCard {...mockPokemonProps} />)
+		renderWithDictionary(<PokemonCard {...mockPokemonProps} />)
 
 		expect(screen.queryByText(/Evo\./)).not.toBeInTheDocument()
 	})
 
 	it('should handle image error gracefully', () => {
-		render(<PokemonCard {...mockPokemonProps} />)
+		renderWithDictionary(<PokemonCard {...mockPokemonProps} />)
 
 		const avatarImage = screen.getByAltText('pikachu avatar')
 
@@ -120,7 +129,9 @@ describe('PokemonCard', () => {
 	})
 
 	it('should apply custom className when provided', () => {
-		const { container } = render(<PokemonCard {...mockPokemonProps} />)
+		const { container } = renderWithDictionary(
+			<PokemonCard {...mockPokemonProps} />,
+		)
 
 		const wrapper = container.querySelector('.pc-card-wrapper')
 		expect(wrapper).toHaveClass('custom-class')
@@ -133,7 +144,7 @@ describe('PokemonCard', () => {
 			name: 'test-pokemon',
 		}
 
-		render(<PokemonCard {...largeIdProps} />)
+		renderWithDictionary(<PokemonCard {...largeIdProps} />)
 
 		expect(screen.getByText('1234')).toBeInTheDocument()
 	})
@@ -145,9 +156,10 @@ describe('PokemonCard', () => {
 			id: 1,
 			generation: 'generation-i',
 			types: ['normal'],
+			lang: 'en' as const,
 		}
 
-		render(<PokemonCard {...minimalProps} />)
+		renderWithDictionary(<PokemonCard {...minimalProps} />)
 
 		expect(screen.getByText('TEST')).toBeInTheDocument()
 		expect(screen.getByText('1')).toBeInTheDocument()
@@ -159,7 +171,7 @@ describe('PokemonCard', () => {
 			name: 'a',
 		}
 
-		render(<PokemonCard {...shortNameProps} />)
+		renderWithDictionary(<PokemonCard {...shortNameProps} />)
 
 		expect(screen.getByText('A')).toBeInTheDocument()
 	})
@@ -170,7 +182,9 @@ describe('PokemonCard', () => {
 			evolutionPlace: 3,
 		}
 
-		const { container } = render(<PokemonCard {...evolutionProps} />)
+		const { container } = renderWithDictionary(
+			<PokemonCard {...evolutionProps} />,
+		)
 
 		// Should have 3 evolution arrows
 		const evolutionArrows = container.querySelectorAll('.evolution-arrow')

@@ -8,7 +8,7 @@ export async function GET(
 ) {
 	const { name } = await ctx.params
 	try {
-		const pokemons = await getPokemonChainByNameUseCase(name)
+		const pokemons = await getPokemonChainByNameUseCase(name, 'en')
 		return NextResponse.json(pokemons, { status: 200 })
 	} catch (error) {
 		return handleApiError(error, {

@@ -9,16 +9,24 @@ import {
 	SearchAndFilterNav,
 } from '@/features/pokemons/presentation/components'
 import { usePagination } from '@/features/pokemons/presentation/hooks/usePagination'
+import type { Locale } from '@/i18n-config'
 import { CardGrid } from '@/shared/components/ui/atoms/CardGrid'
 import { UIPagination } from '@/shared/components/ui/molecules/Pagination'
+import { useDictionary } from '@/shared/providers/DictionaryProvider'
 import { useSearchParams } from 'next/navigation'
 
 interface HomePageViewProps {
 	pokemons: Pokemon[]
 	itemsPerPage: number
+	lang: Locale
 }
 
-export function HomePageView({ pokemons, itemsPerPage }: HomePageViewProps) {
+export function HomePageView({
+	pokemons,
+	itemsPerPage,
+	lang,
+}: HomePageViewProps) {
+	const dict = useDictionary()
 	const searchParams = useSearchParams()
 	const page = Number(searchParams.get('page') || '1') || 1
 	const query = searchParams.get('query') || ''
@@ -61,6 +69,7 @@ export function HomePageView({ pokemons, itemsPerPage }: HomePageViewProps) {
 			/>
 			{paginatedFilteredPokemons.length === 0 ? (
 				<NoResults
+					dict={dict.noResults}
 					query={queryState || ''}
 					hasActiveFilters={!!filtersState.type || !!filtersState.generation}
 					onClearFilters={() =>
@@ -74,6 +83,7 @@ export function HomePageView({ pokemons, itemsPerPage }: HomePageViewProps) {
 						currentPage={currentPage}
 						setCurrentPage={handlePageChange}
 						className="mb-8"
+						dict={dict.pagination}
 					/>
 					<CardGrid>
 						{paginatedFilteredPokemons.map(pokemon => (
@@ -89,6 +99,7 @@ export function HomePageView({ pokemons, itemsPerPage }: HomePageViewProps) {
 								showBehindGradient={false}
 								className="scale-65 w-xl:scale-100 lg:scale-75"
 								searchParams={currentStateParams.toString()}
+								lang={lang}
 							/>
 						))}
 					</CardGrid>

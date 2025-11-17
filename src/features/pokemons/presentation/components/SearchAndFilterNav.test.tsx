@@ -1,4 +1,6 @@
+import en from '@/dictionaries/en.json'
 import SearchAndFilterNav from '@/features/pokemons/presentation/components/SearchAndFilterNav'
+import { DictionaryProvider } from '@/shared/providers/DictionaryProvider'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -156,6 +158,12 @@ vi.mock('@/features/pokemons/domain/enums/generations.enum', () => ({
 	},
 }))
 
+const renderWithDictionary = (component: React.ReactElement) => {
+	return render(
+		<DictionaryProvider dictionary={en}>{component}</DictionaryProvider>,
+	)
+}
+
 describe('SearchAndFilterNav', () => {
 	const mockHandleQueryChange = vi.fn()
 	const mockHandleFiltersChange = vi.fn()
@@ -175,17 +183,20 @@ describe('SearchAndFilterNav', () => {
 	})
 
 	it('should render search input with correct attributes', () => {
-		render(<SearchAndFilterNav {...defaultProps} />)
+		renderWithDictionary(<SearchAndFilterNav {...defaultProps} />)
 
 		const searchInput = screen.getByTestId('search-input')
 		expect(searchInput).toBeInTheDocument()
 		expect(searchInput).toHaveAttribute('name', 'search')
-		expect(searchInput).toHaveAttribute('placeholder', 'Search Pokémon...')
+		expect(searchInput).toHaveAttribute(
+			'placeholder',
+			'Search for a Pokémon...',
+		)
 		expect(searchInput).toHaveValue('')
 	})
 
 	it('should render clear filters button', () => {
-		render(<SearchAndFilterNav {...defaultProps} />)
+		renderWithDictionary(<SearchAndFilterNav {...defaultProps} />)
 
 		const clearButton = screen.getByTestId('clear-filters-button')
 		expect(clearButton).toBeInTheDocument()
@@ -194,7 +205,7 @@ describe('SearchAndFilterNav', () => {
 	})
 
 	it('should render type and generation selects', () => {
-		render(<SearchAndFilterNav {...defaultProps} />)
+		renderWithDictionary(<SearchAndFilterNav {...defaultProps} />)
 
 		const selects = screen.getAllByTestId('select')
 		expect(selects).toHaveLength(2)
@@ -204,7 +215,7 @@ describe('SearchAndFilterNav', () => {
 	})
 
 	it('should call handleQueryChange when search input changes', () => {
-		render(<SearchAndFilterNav {...defaultProps} />)
+		renderWithDictionary(<SearchAndFilterNav {...defaultProps} />)
 
 		const searchInput = screen.getByTestId('search-input')
 		fireEvent.change(searchInput, { target: { value: 'pikachu' } })
@@ -213,7 +224,7 @@ describe('SearchAndFilterNav', () => {
 	})
 
 	it('should call handleFiltersChange when clear filters button is clicked', () => {
-		render(<SearchAndFilterNav {...defaultProps} />)
+		renderWithDictionary(<SearchAndFilterNav {...defaultProps} />)
 
 		const clearButton = screen.getByTestId('clear-filters-button')
 		fireEvent.click(clearButton)
@@ -230,7 +241,7 @@ describe('SearchAndFilterNav', () => {
 			queryState: 'bulbasaur',
 		}
 
-		render(<SearchAndFilterNav {...propsWithQuery} />)
+		renderWithDictionary(<SearchAndFilterNav {...propsWithQuery} />)
 
 		const searchInput = screen.getByTestId('search-input')
 		expect(searchInput).toHaveValue('bulbasaur')
@@ -245,7 +256,7 @@ describe('SearchAndFilterNav', () => {
 			},
 		}
 
-		render(<SearchAndFilterNav {...propsWithFilters} />)
+		renderWithDictionary(<SearchAndFilterNav {...propsWithFilters} />)
 
 		const selects = screen.getAllByTestId('select')
 		expect(selects[0]).toHaveAttribute('data-value', 'fire')
@@ -253,7 +264,7 @@ describe('SearchAndFilterNav', () => {
 	})
 
 	it('should render all Pokemon types in type select', () => {
-		render(<SearchAndFilterNav {...defaultProps} />)
+		renderWithDictionary(<SearchAndFilterNav {...defaultProps} />)
 
 		// Check that all Pokemon types are rendered as select items
 		const typeItems = screen.getAllByTestId('select-item')
@@ -274,7 +285,7 @@ describe('SearchAndFilterNav', () => {
 	})
 
 	it('should render all Pokemon generations in generation select', () => {
-		render(<SearchAndFilterNav {...defaultProps} />)
+		renderWithDictionary(<SearchAndFilterNav {...defaultProps} />)
 
 		const generationItems = screen.getAllByTestId('select-item')
 
@@ -291,7 +302,7 @@ describe('SearchAndFilterNav', () => {
 	})
 
 	it('should have correct CSS classes on Card', () => {
-		render(<SearchAndFilterNav {...defaultProps} />)
+		renderWithDictionary(<SearchAndFilterNav {...defaultProps} />)
 
 		const card = screen.getByTestId('card')
 		expect(card).toHaveClass(
@@ -305,14 +316,14 @@ describe('SearchAndFilterNav', () => {
 	})
 
 	it('should have correct CSS classes on search input', () => {
-		render(<SearchAndFilterNav {...defaultProps} />)
+		renderWithDictionary(<SearchAndFilterNav {...defaultProps} />)
 
 		const searchInput = screen.getByTestId('search-input')
 		expect(searchInput).toHaveClass('text-lg!')
 	})
 
 	it('should have correct button variant and size', () => {
-		render(<SearchAndFilterNav {...defaultProps} />)
+		renderWithDictionary(<SearchAndFilterNav {...defaultProps} />)
 
 		const clearButton = screen.getByTestId('clear-filters-button')
 		expect(clearButton).toHaveAttribute('data-variant', 'default')
@@ -325,7 +336,7 @@ describe('SearchAndFilterNav', () => {
 			queryState: '', // Testing edge case with empty string instead of null
 		}
 
-		render(<SearchAndFilterNav {...propsWithNullQuery} />)
+		renderWithDictionary(<SearchAndFilterNav {...propsWithNullQuery} />)
 
 		const searchInput = screen.getByTestId('search-input')
 		expect(searchInput).toHaveValue('')
@@ -340,7 +351,7 @@ describe('SearchAndFilterNav', () => {
 			},
 		}
 
-		render(<SearchAndFilterNav {...propsWithNullFilters} />)
+		renderWithDictionary(<SearchAndFilterNav {...propsWithNullFilters} />)
 
 		const selects = screen.getAllByTestId('select')
 		expect(selects[0]).toHaveAttribute('data-value', '')
@@ -348,7 +359,7 @@ describe('SearchAndFilterNav', () => {
 	})
 
 	it('should render select triggers with correct CSS classes', () => {
-		render(<SearchAndFilterNav {...defaultProps} />)
+		renderWithDictionary(<SearchAndFilterNav {...defaultProps} />)
 
 		const selectTriggers = screen.getAllByTestId('select-trigger')
 
@@ -357,7 +368,7 @@ describe('SearchAndFilterNav', () => {
 	})
 
 	it('should render select items with correct CSS classes', () => {
-		render(<SearchAndFilterNav {...defaultProps} />)
+		renderWithDictionary(<SearchAndFilterNav {...defaultProps} />)
 
 		const selectItems = screen.getAllByTestId('select-item')
 
@@ -367,7 +378,9 @@ describe('SearchAndFilterNav', () => {
 	})
 
 	it('should render section with correct CSS classes for filters', () => {
-		const { container } = render(<SearchAndFilterNav {...defaultProps} />)
+		const { container } = renderWithDictionary(
+			<SearchAndFilterNav {...defaultProps} />,
+		)
 
 		const section = container.querySelector('section')
 		expect(section).toHaveClass('flex', 'flex-wrap', 'items-center', 'gap-4')

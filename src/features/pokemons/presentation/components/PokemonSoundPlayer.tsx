@@ -1,17 +1,21 @@
 'use client'
 
 import { Button } from '@/shared/components/ui/atoms/Button'
+import { formatString } from '@/shared/lib/utils'
+import type { Dictionary } from '@/shared/providers/DictionaryProvider'
 import { Volume2, VolumeX } from 'lucide-react'
 import { useRef, useState } from 'react'
 
 interface PokemonSoundPlayerProps {
 	sound: string | null
 	pokemonName: string
+	dict: Dictionary['detail']['player']
 }
 
 export default function PokemonSoundPlayer({
 	sound,
 	pokemonName,
+	dict,
 }: PokemonSoundPlayerProps) {
 	const audioRef = useRef<HTMLAudioElement>(null)
 	const [isPlaying, setIsPlaying] = useState(false)
@@ -54,7 +58,7 @@ export default function PokemonSoundPlayer({
 				onClick={playSound}
 				disabled={isPlaying || hasError}
 				className="flex min-w-30 items-center gap-2 transition-all duration-200 hover:scale-105"
-				title={`Play ${pokemonName} sound`}
+				title={formatString(dict.title, { pokemonName })}
 			>
 				{isPlaying ? (
 					<Volume2 className="h-4 w-4 animate-pulse" />
@@ -63,7 +67,7 @@ export default function PokemonSoundPlayer({
 				) : (
 					<Volume2 className="h-4 w-4" />
 				)}
-				{isPlaying ? 'Playing...' : hasError ? 'Error' : 'Play Sound'}
+				{isPlaying ? dict.playing : hasError ? dict.error : dict.play}
 			</Button>
 
 			{/* Audio element oculto */}
@@ -72,13 +76,13 @@ export default function PokemonSoundPlayer({
 				preload="none"
 				onEnded={handleAudioEnd}
 				onError={handleAudioError}
-				aria-label={`${pokemonName} sound`}
+				aria-label={formatString(dict['aria-label'], { pokemonName })}
 			>
 				<source src={sound} type="audio/mpeg" />
 				<source src={sound} type="audio/wav" />
 				<source src={sound} type="audio/ogg" />
-				<track kind="captions" srcLang="en" label="Pokemon sound" />
-				Your browser does not support the audio element.
+				<track kind="captions" srcLang="en" label={dict.label} />
+				{dict.notSupported}{' '}
 			</audio>
 		</>
 	)

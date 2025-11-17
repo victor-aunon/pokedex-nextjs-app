@@ -1,5 +1,7 @@
+import en from '@/dictionaries/en.json'
 import type { PokemonItem } from '@/features/pokemons/domain/entities/pokemon'
 import PokemonEvolutionChain from '@/features/pokemons/presentation/components/PokemonEvolutionChain'
+import { DictionaryProvider } from '@/shared/providers/DictionaryProvider'
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
@@ -99,12 +101,20 @@ const mockPokemonChain: PokemonItem[] = [
 	},
 ]
 
+const renderWithDictionary = (component: React.ReactElement) => {
+	return render(
+		<DictionaryProvider dictionary={en}>{component}</DictionaryProvider>,
+	)
+}
+
 describe('PokemonEvolutionChain', () => {
 	it('should render evolution chain title', () => {
-		render(
+		renderWithDictionary(
 			<PokemonEvolutionChain
 				currentPokemonName="bulbasaur"
 				pokemonChain={mockPokemonChain}
+				dict={en.detail}
+				lang="en"
 			/>,
 		)
 
@@ -112,10 +122,12 @@ describe('PokemonEvolutionChain', () => {
 	})
 
 	it('should render all Pokemon in the chain', () => {
-		render(
+		renderWithDictionary(
 			<PokemonEvolutionChain
 				currentPokemonName="bulbasaur"
 				pokemonChain={mockPokemonChain}
+				dict={en.detail}
+				lang="en"
 			/>,
 		)
 
@@ -131,10 +143,12 @@ describe('PokemonEvolutionChain', () => {
 	})
 
 	it('should render Pokemon images with correct attributes', () => {
-		render(
+		renderWithDictionary(
 			<PokemonEvolutionChain
 				currentPokemonName="bulbasaur"
 				pokemonChain={mockPokemonChain}
+				dict={en.detail}
+				lang="en"
 			/>,
 		)
 
@@ -161,26 +175,30 @@ describe('PokemonEvolutionChain', () => {
 	})
 
 	it('should create correct navigation links for each Pokemon', () => {
-		render(
+		renderWithDictionary(
 			<PokemonEvolutionChain
 				currentPokemonName="bulbasaur"
 				pokemonChain={mockPokemonChain}
+				dict={en.detail}
+				lang="en"
 			/>,
 		)
 
 		const links = screen.getAllByRole('link')
 		expect(links).toHaveLength(3)
 
-		expect(links[0]).toHaveAttribute('href', '/pokemons/bulbasaur')
-		expect(links[1]).toHaveAttribute('href', '/pokemons/ivysaur')
-		expect(links[2]).toHaveAttribute('href', '/pokemons/venusaur')
+		expect(links[0]).toHaveAttribute('href', '/en/pokemons/bulbasaur')
+		expect(links[1]).toHaveAttribute('href', '/en/pokemons/ivysaur')
+		expect(links[2]).toHaveAttribute('href', '/en/pokemons/venusaur')
 	})
 
 	it('should highlight current Pokemon with triangle indicator', () => {
-		render(
+		renderWithDictionary(
 			<PokemonEvolutionChain
 				currentPokemonName="ivysaur"
 				pokemonChain={mockPokemonChain}
+				dict={en.detail}
+				lang="en"
 			/>,
 		)
 
@@ -189,10 +207,12 @@ describe('PokemonEvolutionChain', () => {
 	})
 
 	it('should be case insensitive when matching current Pokemon', () => {
-		render(
+		renderWithDictionary(
 			<PokemonEvolutionChain
 				currentPokemonName="BULBASAUR"
 				pokemonChain={mockPokemonChain}
+				dict={en.detail}
+				lang="en"
 			/>,
 		)
 
@@ -201,8 +221,13 @@ describe('PokemonEvolutionChain', () => {
 	})
 
 	it('should handle empty evolution chain', () => {
-		render(
-			<PokemonEvolutionChain currentPokemonName="pikachu" pokemonChain={[]} />,
+		renderWithDictionary(
+			<PokemonEvolutionChain
+				currentPokemonName="pikachu"
+				pokemonChain={[]}
+				dict={en.detail}
+				lang="en"
+			/>,
 		)
 
 		expect(screen.getByText('Evolution Chain')).toBeInTheDocument()
@@ -212,10 +237,12 @@ describe('PokemonEvolutionChain', () => {
 	it('should handle single Pokemon in chain', () => {
 		const singlePokemonChain = mockPokemonChain.slice(0, 1)
 
-		render(
+		renderWithDictionary(
 			<PokemonEvolutionChain
 				currentPokemonName="bulbasaur"
 				pokemonChain={singlePokemonChain}
+				dict={en.detail}
+				lang="en"
 			/>,
 		)
 
@@ -251,10 +278,12 @@ describe('PokemonEvolutionChain', () => {
 			},
 		]
 
-		render(
+		renderWithDictionary(
 			<PokemonEvolutionChain
 				pokemonChain={chainWithoutImage}
 				currentPokemonName="test-pokemon"
+				dict={en.detail}
+				lang="en"
 			/>,
 		)
 
@@ -264,10 +293,12 @@ describe('PokemonEvolutionChain', () => {
 	})
 
 	it('should not show triangle indicator when current Pokemon is not in chain', () => {
-		render(
+		renderWithDictionary(
 			<PokemonEvolutionChain
 				currentPokemonName="pikachu"
 				pokemonChain={mockPokemonChain}
+				dict={en.detail}
+				lang="en"
 			/>,
 		)
 
@@ -301,10 +332,12 @@ describe('PokemonEvolutionChain', () => {
 			},
 		]
 
-		render(
+		renderWithDictionary(
 			<PokemonEvolutionChain
 				currentPokemonName="nidoran-f"
 				pokemonChain={specialCharacterPokemon}
+				dict={en.detail}
+				lang="en"
 			/>,
 		)
 
