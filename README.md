@@ -4,10 +4,11 @@ Una aplicación moderna de Pokédex construida con **Next.js 15**, **TypeScript*
 
 ## 🕹️ Live demo
 
-Puedes probar la aplicación desplegada en Vercel en la dirección: https://pokedex-nextjs-app-kappa.vercel.app
+Puedes probar la aplicación desplegada en Vercel en la dirección: <https://pokedex-nextjs-app-kappa.vercel.app>
 
 ## ✨ Características
 
+- 🌍 **Internacionalización (i18n)** - Disponible en **Inglés** y **Español**
 - 🔍 **Búsqueda inteligente** por nombre de Pokémon
 - 🏷️ **Filtros avanzados** por tipo y generación
 - 📱 **Diseño responsive** optimizado para todos los dispositivos
@@ -20,28 +21,35 @@ Puedes probar la aplicación desplegada en Vercel en la dirección: https://poke
 
 ## 🏗️ Arquitectura del Proyecto
 
-Este proyecto implementa **Arquitectura Hexagonal (Clean Architecture)** con la siguiente estructura:
+Este proyecto implementa **Arquitectura Hexagonal (Clean Architecture)** combinada con **Atomic Design** para los componentes UI, con la siguiente estructura:
 
 ```
 src/
-├── app/                          # App Router de Next.js 15
-│   ├── layout.tsx               # Layout principal de la aplicación
-│   ├── page.tsx                 # Página de inicio con lista de Pokémon
-│   ├── pokemons/
-│   │   └── [name]/
-│   │       ├── page.tsx         # Página de detalle de Pokémon
-│   │       ├── PokemonPageView.tsx
-│   │       └── PokemonPageSkeleton.tsx
+├── app/                         # App Router de Next.js 15
+│   ├── [lang]/                  # Rutas dinámicas por idioma (en/es)
+│   │   ├── layout.tsx           # Layout con idioma
+│   │   ├── page.tsx             # Página de inicio con lista de Pokémon
+│   │   ├── HomePageView.tsx     # Vista de la página principal
+│   │   └── pokemons/
+│   │       └── [name]/
+│   │           ├── page.tsx         # Página de detalle de Pokémon
+│   │           ├── PokemonPageView.tsx
+│   │           └── PokemonPageSkeleton.tsx
+│   ├── icon.tsx                 # Generador de favicon dinámico
 │   └── api/
 │       └── pokemons/
 │           ├── route.ts         # API endpoint para lista paginada
 │           └── [name]/
 │               └── route.ts     # API endpoint para Pokémon específico
+├── dictionaries/                # Archivos de traducción i18n
+│   ├── en.json                  # Diccionario en inglés
+│   └── es.json                  # Diccionario en español
 ├── features/
 │   └── pokemons/
 │       ├── application/         # Casos de uso (Use Cases)
 │       │   ├── get-pokemons-list.usecase.ts
-│       │   └── get-pokemon-chain-by-name.usecase.ts
+│       │   ├── get-pokemon-chain-by-name.usecase.ts
+│       │   └── get-pokemon-by-name.usecase.ts
 │       ├── domain/              # Entidades y reglas de negocio
 │       │   ├── entities/
 │       │   │   └── pokemon.ts
@@ -58,6 +66,7 @@ src/
 │       │           └── types/
 │       └── presentation/        # Componentes UI y hooks
 │           ├── components/
+│           │   ├── NoResults.tsx
 │           │   ├── PokemonCard.tsx
 │           │   ├── PokemonData.tsx
 │           │   ├── PokemonEvolutionChain.tsx
@@ -70,33 +79,109 @@ src/
 │               └── usePagination.ts
 ├── shared/                      # Utilidades compartidas
 │   ├── components/
-│   │   ├── ui/                  # Componentes UI base
-│   │   │   └── atoms/
-│   │   │       └── Button.tsx
-│   │   ├── CardGrid.tsx
-│   │   └── TiltedCard.tsx
+│   │   └── ui/                  # Componentes UI base (Atomic Design)
+│   │       ├── atoms/           # 🔵 Componentes atómicos básicos
+│   │       │   ├── Button.tsx           # Botones reutilizables
+│   │       │   ├── CardGrid.tsx         # Grid para tarjetas
+│   │       │   ├── GoBackButton.tsx     # Botón de retroceso
+│   │       │   ├── InputSearch.tsx      # Input de búsqueda
+│   │       │   ├── Select.tsx           # Select personalizado
+│   │       │   └── Skeleton.tsx         # Estados de carga
+│   │       └── molecules/       # 🟢 Componentes moleculares compuestos
+│   │           ├── Card.tsx                      # Tarjeta base
+│   │           ├── Footer.tsx                    # Footer de la app
+│   │           ├── Header.tsx                    # Header con navegación
+│   │           ├── LanguageSelector.tsx          # Selector de idioma
+│   │           ├── NotFoundNavigation.tsx        # Navegación 404
+│   │           ├── Pagination.tsx                # Paginación completa
+│   │           └── PaginationWithoutNavigation.tsx  # Paginación simple
 │   ├── lib/
 │   │   ├── utils.ts
 │   │   ├── schemas.ts
-│   │   └── pokemon-utils.ts
+│   │   ├── pokemon-utils.ts
+│   │   └── get-dictionary.ts    # Helpers para i18n
+│   ├── providers/
+│   │   └── DictionaryProvider.tsx # Context de i18n
 │   └── types/
+│       └── pagination.types.ts
+├── middleware.ts                # Middleware de Next.js para i18n
+├── i18n-config.ts               # Configuración de idiomas
 └── styles/                      # Estilos globales
     ├── globals.css
     ├── base.css
-    └── theme.css
+    ├── theme.css
+    └── pokemon.css
 ```
+
+## 🌍 Internacionalización (i18n)
+
+La aplicación está **completamente traducida** y disponible en dos idiomas:
+
+- **🇬🇧 Inglés (English)** - Idioma por defecto
+- **🇪🇸 Español (Spanish)**
+
+### Características de i18n:
+
+- **Detección automática** del idioma del navegador mediante `Accept-Language` headers
+- **Rutas localizadas**: `/en/...` y `/es/...`
+- **Selector de idioma** en el header para cambiar entre idiomas
+- **Middleware personalizado** para redirección automática según preferencias del usuario
+- **Context API** para acceso global a los diccionarios de traducción
+- **Traducciones completas** de toda la UI: navegación, filtros, estadísticas, mensajes, etc.
+
+### Configuración de Idiomas
+
+El archivo `i18n-config.ts` define los idiomas disponibles:
+
+```typescript
+export const i18n = {
+  defaultLocale: 'en',
+  locales: ['en', 'es'],
+} as const
+```
+
+### Middleware i18n
+
+El archivo `middleware.ts` implementa:
+
+- Detección automática del idioma preferido del usuario
+- Redirección transparente a la ruta localizada correspondiente
+- Negociación de contenido basada en headers HTTP
+- Exclusión inteligente de assets estáticos y API routes
+
+### Diccionarios
+
+Los archivos de traducción en `src/dictionaries/`:
+
+- `en.json` - Traducciones en inglés
+- `es.json` - Traducciones en español
+
+Incluyen traducciones para:
+- Navegación y UI general
+- Tipos de Pokémon
+- Generaciones
+- Estadísticas
+- Mensajes de error y estados vacíos
+- Labels y placeholders de formularios
 
 ## 📋 Páginas y Funcionalidades
 
-### 🏠 Página Principal (`/`)
+### 🏠 Página Principal (`/[lang]`)
+
+Rutas disponibles: `/en` (inglés) o `/es` (español)
+
 - **Lista paginada** de todos los Pokémon
 - **Barra de búsqueda** con filtrado en tiempo real
 - **Filtros por tipo** (Fuego, Agua, Planta, etc.)
 - **Filtros por generación** (I, II, III, etc.)
 - **Grid responsive** de tarjetas de Pokémon (ciertos efectos visuales están desactivados para móvil)
 - **Paginación** con navegación intuitiva
+- **Selector de idioma** en el header
 
-### 🔍 Página de Detalle (`/pokemons/[name]`)
+### 🔍 Página de Detalle (`/[lang]/pokemons/[name]`)
+
+Rutas disponibles: `/en/pokemons/[name]` o `/es/pokemons/[name]`
+
 - **Información completa** del Pokémon seleccionado
 - **Imagen oficial** de alta calidad
 - **Datos básicos**: altura, peso, especie, generación
@@ -105,12 +190,13 @@ src/
 - **Cadena de evolución** interactiva con navegación
 - **Reproductor de sonido** del Pokémon
 - **Botón de regreso** a la lista principal
+- **Todo el contenido traducido** según el idioma seleccionado
 
 ## 🚀 Instalación y Configuración
 
 ### Prerrequisitos
 
-- **Node.js** 18+ 
+- **Node.js** 18+
 - **pnpm** (recomendado) o npm
 
 ### 1. Clonar el repositorio
@@ -185,6 +271,7 @@ pnpm test:coverage
 <summary>📝 <strong>Lista Completa de Tests</strong></summary>
 
 #### 🧩 **Componentes de Presentación**
+
 - **PokemonCard Component** (13 tests)
   - ✅ Renderizado de información básica
   - ✅ Imágenes con atributos correctos
@@ -250,6 +337,7 @@ pnpm test:coverage
   - ✅ Atributos de accesibilidad
 
 #### 🔧 **Lógica de Negocio y Hooks**
+
 - **usePagination Hook** (10 tests)
   - ✅ Inicialización con valores por defecto
   - ✅ Filtrado por query y tipo
@@ -272,6 +360,7 @@ pnpm test:coverage
   - ✅ Manejo de Pokémon míticos
 
 #### 🌐 **API y Utilidades**
+
 - **/api/pokemons Route** (4 tests)
   - ✅ Lista paginada de Pokémon
   - ✅ Parámetros de query correctos
@@ -311,33 +400,46 @@ pnpm typecheck        # Verificar tipos TypeScript
 ## 🎨 Stack Tecnológico
 
 ### Core
+
 - **[Next.js 15](https://nextjs.org)** - Framework React con App Router
 - **[TypeScript](https://www.typescriptlang.org)** - Tipado estático
 - **[Tailwind CSS](https://tailwindcss.com)** - Framework CSS utility-first
 - **[Tailwind CSS v4](https://tailwindcss.com/blog/tailwindcss-v4-alpha)** - Nueva versión con mejor performance
 
+### Internacionalización
+
+- **[Negotiator](https://github.com/jshttp/negotiator)** - Negociación de contenido HTTP
+- **[@formatjs/intl-localematcher](https://formatjs.io/)** - Matching de locales según estándares de i18n
+- **Context API** - Gestión de estado global para diccionarios
+
 ### UI y Componentes
+
 - **[Radix UI](https://www.radix-ui.com)** - Componentes primitivos accesibles
 - **[Lucide React](https://lucide.dev)** - Iconos SVG modernos
 - **[Class Variance Authority](https://cva.style/docs)** - Variantes de componentes
 - **[Tailwind Merge](https://github.com/dcastil/tailwind-merge)** - Fusión inteligente de clases
 - **[Framer Motion](https://www.framer.com/motion/)** - Animaciones declarativas
+- **Atomic Design** - Metodología de diseño de componentes (atoms/molecules)
 
 ### Validación de datos de entrada
+
 - **[Zod](https://zod.dev)** - Validación de esquemas TypeScript
 
 ### Testing
+
 - **[Vitest](https://vitest.dev)** - Framework de testing rápido
 - **[React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)** - Testing de componentes React
 - **[MSW](https://mswjs.io)** - Mock Service Worker para APIs
 - **[Happy DOM](https://github.com/capricorn86/happy-dom)** - DOM environment para tests
 
 ### Herramientas de Desarrollo
+
 - **[Biome](https://biomejs.dev)** - Linter y formatter ultrarrápido
 - **[Husky](https://typicode.github.io/husky/)** - Git hooks
 - **[lint-staged](https://github.com/lint-staged/lint-staged)** - Linting en archivos staged
 
 ### Validación de Entorno
+
 - **[@t3-oss/env-nextjs](https://env.t3.gg)** - Validación de variables de entorno
 
 ## 🌐 API Externa
