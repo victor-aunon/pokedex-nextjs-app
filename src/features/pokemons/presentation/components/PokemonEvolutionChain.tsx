@@ -38,7 +38,7 @@ export default function PokemonEvolutionChain({
 							{/* Inner glow */}
 							{pokemon.name.toLowerCase() ===
 								currentPokemonName.toLowerCase() && (
-								<div className="absolute top-1/2 left-1/2 h-2 w-2 rounded-lg shadow-[0_-15px_50px_50px_var(--color-primary)]" />
+								<div className="absolute top-1/2 left-1/2 h-0 w-0 rounded-lg shadow-[0_-15px_50px_50px_var(--color-primary)]" />
 							)}
 							<img
 								src={pokemon.image || ''}
