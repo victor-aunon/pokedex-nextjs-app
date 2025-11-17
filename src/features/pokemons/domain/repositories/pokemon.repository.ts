@@ -2,7 +2,6 @@ import type {
 	Pokemon,
 	PokemonBase,
 	PokemonGenerationDescriptionOddity,
-	PokemonItem,
 } from '@/features/pokemons/domain/entities/pokemon'
 import type { Pagination } from '@/shared/types/pagination.types'
 import type { PokemonGenerations } from '../enums/generations.enum'

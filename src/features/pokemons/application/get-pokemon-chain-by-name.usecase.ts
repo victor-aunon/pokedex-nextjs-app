@@ -13,7 +13,7 @@ export async function getPokemonChainByNameUseCase(
 	}
 
 	const pokemonExtraData = await pokemonRepository.getPokemonSpecies(
-		pokemonBase.name,
+		pokemonBase.species,
 	)
 	let evolutionChain: string[] = []
 	if (pokemonExtraData.evolutionChain) {
@@ -27,13 +27,21 @@ export async function getPokemonChainByNameUseCase(
 		try {
 			// Avoid fetching the same pokemon twice
 			if (pokemonName === pokemonBase.name) {
-				pokemons.push({ ...pokemonBase, ...pokemonExtraData })
+				pokemons.push({
+					...pokemonBase,
+					...pokemonExtraData,
+					evolutionChain: pokemonExtraData.evolutionChain || null,
+				})
 				continue
 			}
 			const evolution = await pokemonRepository.getPokemonByName(pokemonName)
 			const evolutionExtraData =
 				await pokemonRepository.getPokemonSpecies(pokemonName)
-			pokemons.push({ ...evolution, ...evolutionExtraData })
+			pokemons.push({
+				...evolution,
+				...evolutionExtraData,
+				evolutionChain: evolutionExtraData.evolutionChain || null,
+			})
 		} catch (error) {
 			console.error(`Error fetching evolved pokemon ${pokemonName}: ${error}`)
 		}

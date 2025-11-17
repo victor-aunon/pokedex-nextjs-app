@@ -10,8 +10,12 @@ export async function getPokemonByNameUseCase(
 	const pokemonBase = await pokemonRepository.getPokemonByName(name)
 
 	const pokemonExtraData = await pokemonRepository.getPokemonSpecies(
-		pokemonBase.name,
+		pokemonBase.species,
 	)
 
-	return { ...pokemonBase, ...pokemonExtraData }
+	return {
+		...pokemonBase,
+		...pokemonExtraData,
+		evolutionChain: pokemonExtraData.evolutionChain || null,
+	}
 }

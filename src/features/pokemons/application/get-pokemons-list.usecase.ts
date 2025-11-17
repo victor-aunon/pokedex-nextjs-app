@@ -3,10 +3,10 @@ import type { Pokemon } from '@/features/pokemons/domain/entities/pokemon'
 import type { PokemonRepository } from '@/features/pokemons/domain/repositories/pokemon.repository'
 import { pokeapiRepository } from '@/features/pokemons/infrastructure/adapters/pokeapi/pokeapi.adapter'
 import type { Pagination } from '@/shared/types/pagination.types'
-import type { GetPokemonListInput } from './get-pokemon-list.input'
+import type { GetPokemonsListInput } from './get-pokemons-list.input'
 
 export async function getPokemonsListUseCase(
-	input: GetPokemonListInput = {},
+	input: GetPokemonsListInput = {},
 ): Promise<Pagination<Pokemon>> {
 	const pokemonRepository: PokemonRepository = pokeapiRepository()
 	const {
