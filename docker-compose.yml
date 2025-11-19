@@ -1,0 +1,11 @@
+services:
+  nextjs-pokedex-app:
+    image: nextjs-app-docker:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    restart: always
+    env_file:
+      - .env

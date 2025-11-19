@@ -11,6 +11,7 @@ const __dirname = dirname(__filename)
 
 /** @type {import("next").NextConfig} */
 const config = {
+	output: 'standalone',
 	turbopack: {
 		root: __dirname,
 	},
