@@ -83,5 +83,5 @@ jobs:
         run: |
           curl -X POST \
                -H "Content-Type: application/json" \
-               -d '{"repository": {"repo_name": "ghcr.io/victor-aunon/pokedex-nextjs-app"}, "push_data": {"tag": "latest"}}' \
+          -d '{"repository": {"repo_name": "ghcr.io/victor-aunon/pokedex-nextjs-app:latest"}, "push_data": {"tag": "latest"}}' \
                "${{ secrets.DOKPLOY_WEBHOOK_URL }}"

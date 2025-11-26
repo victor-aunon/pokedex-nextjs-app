@@ -2,16 +2,18 @@
 # Etapa 1: Construcción (Build Stage)
 # ----------------------------------------------------
 # Usamos la imagen base de Node.js que incluye las herramientas necesarias.
-FROM node:20-alpine AS builder
-
-# IMPORTANTE: libc6-compat es necesario a veces en Alpine para procesar imágenes/fuentes
-RUN apk add --no-cache libc6-compat
+FROM node:20-slim AS builder
 
 # Establece el entorno como producción
 ENV NODE_ENV=production
+# Otras variables necesarias
+ARG DEFAULT_PAGINATION_LIMIT
+ENV DEFAULT_PAGINATION_LIMIT=$DEFAULT_PAGINATION_LIMIT
 
-# Instala pnpm globalmente
-RUN npm install -g pnpm
+# Instalar pnpm (en slim hay que instalarlo o activarlo con corepack)
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
 # Establece el directorio de trabajo dentro del contenedor
 WORKDIR /app
@@ -21,7 +23,7 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
 
 # Instala las dependencias del proyecto
-RUN pnpm install --ignore-scripts
+RUN pnpm install --frozen-lockfile --ignore-scripts
 
 # Copia el resto de los archivos de la aplicación
 COPY . .
@@ -35,7 +37,7 @@ RUN pnpm run build
 # ----------------------------------------------------
 # Usamos una imagen base más pequeña para la aplicación en producción.
 # Esto reduce el tamaño de la imagen final para un despliegue más rápido.
-FROM node:20-alpine AS runner
+FROM node:20-slim AS runner
 
 # Instala pnpm globalmente en esta imagen también
 RUN npm install -g pnpm
