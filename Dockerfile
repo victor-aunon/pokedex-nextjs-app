@@ -4,6 +4,9 @@
 # Usamos la imagen base de Node.js que incluye las herramientas necesarias.
 FROM node:20-alpine AS builder
 
+# IMPORTANTE: libc6-compat es necesario a veces en Alpine para procesar imágenes/fuentes
+RUN apk add --no-cache libc6-compat
+
 # Establece el entorno como producción
 ENV NODE_ENV=production
 
@@ -39,6 +42,7 @@ RUN npm install -g pnpm
 
 # Establece el entorno como producción
 ENV NODE_ENV=production
+ENV HOSTNAME="0.0.0.0"
 
 # Establece el directorio de trabajo para la aplicación
 WORKDIR /app
@@ -54,7 +58,7 @@ COPY --from=builder /app/public ./public/
 
 # Instala *solo* las dependencias de producción.
 # Esto es crucial para la seguridad y el tamaño.
-RUN pnpm install --prod --frozen-lockfile --ignore-scripts
+RUN pnpm install --frozen-lockfile --ignore-scripts
 
 # Expone el puerto por defecto de Next.js
 EXPOSE 3000
