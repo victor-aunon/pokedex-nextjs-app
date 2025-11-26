@@ -23,6 +23,8 @@ export function middleware(request: NextRequest) {
 		[
 			'/manifest.json',
 			'/favicon.ico',
+			'/icon',
+			'/apple-icon',
 			'/logo.png', // Añade aquí tus assets públicos
 		].includes(pathname) ||
 		pathname.startsWith('/_next') ||
@@ -51,6 +53,6 @@ export function middleware(request: NextRequest) {
 export const config = {
 	// Matcher para interceptar todas las rutas excepto las excluidas
 	matcher: [
-		'/((?!api|_next/static|_next/image|favicon.ico|img|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+		'/((?!api|_next/static|_next/image|favicon.ico|icon|apple-icon|img|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
 	],
 }
