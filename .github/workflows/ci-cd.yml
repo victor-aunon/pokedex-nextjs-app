@@ -80,4 +80,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Dokploy Webhook
-        run: curl -X POST "${{ secrets.DOKPLOY_WEBHOOK_URL }}"
+        run: |
+          curl -X POST \
+               -H "Content-Type: application/json" \
+               -d '{"repository": {"repo_name": "ghcr.io/victor-aunon/pokedex-nextjs-app"}, "push_data": {"tag": "latest"}}' \
+               "${{ secrets.DOKPLOY_WEBHOOK_URL }}"
